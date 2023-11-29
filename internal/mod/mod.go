@@ -2,13 +2,13 @@ package mod
 
 import (
 	"fmt"
-	"os/exec"
+
+	"github.com/ryanadiputraa/ggen/internal/util"
 )
 
 func Write(mod, name string) error {
 	path := fmt.Sprintf("%v", name)
-	write := exec.Command("bash", "-c", fmt.Sprintf("echo '%s' > %s/go.mod", template(mod), path))
-	return write.Run()
+	return util.WriteToFile(template(mod), path)
 }
 
 func template(mod string) string {

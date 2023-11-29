@@ -2,19 +2,16 @@ package server
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
+
+	"github.com/ryanadiputraa/ggen/internal/util"
 )
 
 func Write(mod, name string) error {
 	path := fmt.Sprintf("%v/internal/server", name)
-
-	if err := os.MkdirAll(path, 0755); err != nil {
+	if err := util.MakeDirectory(path); err != nil {
 		return err
 	}
-
-	write := exec.Command("bash", "-c", fmt.Sprintf("echo '%s' > %s/server.go", template(mod), path))
-	return write.Run()
+	return util.WriteToFile(template(mod), path)
 }
 
 func template(mod string) string {
