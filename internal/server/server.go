@@ -3,15 +3,15 @@ package server
 import (
 	"fmt"
 
-	"github.com/ryanadiputraa/ggen/internal/util"
+	"github.com/ryanadiputraa/ggen/internal/writer"
 )
 
 func Write(mod, name string) error {
 	path := fmt.Sprintf("%v/internal/server", name)
-	if err := util.MakeDirectory(path); err != nil {
+	if err := writer.CreateDirectory(path); err != nil {
 		return err
 	}
-	return util.WriteToFile(template(mod), path)
+	return writer.WriteToFile(template(mod), path)
 }
 
 func template(mod string) string {

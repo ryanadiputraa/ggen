@@ -1,4 +1,4 @@
-package util
+package writer
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-func MakeDirectory(dir string) error {
+func CreateDirectory(dir string) error {
 	return os.MkdirAll(dir, 0755)
 }
 

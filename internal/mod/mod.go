@@ -3,12 +3,12 @@ package mod
 import (
 	"fmt"
 
-	"github.com/ryanadiputraa/ggen/internal/util"
+	"github.com/ryanadiputraa/ggen/internal/writer"
 )
 
 func Write(mod, name string) error {
 	path := fmt.Sprintf("%v", name)
-	return util.WriteToFile(template(mod), path)
+	return writer.WriteToFile(template(mod), path)
 }
 
 func template(mod string) string {
