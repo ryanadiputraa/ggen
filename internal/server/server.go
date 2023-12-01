@@ -19,23 +19,25 @@ func template(mod string) string {
 
 import (
     "context"
-    "log"
     "net/http"
     "os"
     "os/signal"
     "time"
 
-    "%v/configs"
+    "%[1]v/configs"
+    "%[1]v/pkg/logger"
 )
 
 type Server struct {
 	config *configs.Config
+    log    logger.Logger
 	web    *http.ServeMux
 }
 
-func NewHTTPServer(config *configs.Config) *Server {
+func NewHTTPServer(config *configs.Config, log logger.Logger) *Server {
 	return &Server{
 		config: config,
+        log:    log,
 		web:    http.NewServeMux(),
 	}
 }
@@ -49,8 +51,9 @@ func (s *Server) ServeHTTP() error {
 	}
 
     go func() {
+        s.log.Info("starting server on port ", s.config.Port)
         if err := server.ListenAndServe(); err != nil {
-            log.Fatal(err)
+            s.log.Fatal(err)
         }
     }()
 
@@ -59,7 +62,7 @@ func (s *Server) ServeHTTP() error {
     signal.Notify(quit, os.Kill)
 
     sig := <-quit
-    log.Println("received terminate, graceful shutdown ", sig)
+    s.log.Info("received terminate, graceful shutdown ", sig)
 
     tc, shutdown := context.WithTimeout(context.Background(), 30*time.Second)
     defer shutdown()

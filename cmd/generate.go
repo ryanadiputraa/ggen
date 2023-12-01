@@ -7,6 +7,7 @@ import (
 
 	_cmd "github.com/ryanadiputraa/ggen/internal/cmd"
 	"github.com/ryanadiputraa/ggen/internal/configs"
+	"github.com/ryanadiputraa/ggen/internal/logger"
 	_mod "github.com/ryanadiputraa/ggen/internal/mod"
 	"github.com/ryanadiputraa/ggen/internal/server"
 	"github.com/spf13/cobra"
@@ -57,6 +58,9 @@ func generateProject(cmd *cobra.Command, args []string) {
 		log.Fatal()
 	}
 	if err := server.Write(mod, name); err != nil {
+		log.Fatal()
+	}
+	if err := logger.Write(mod, name); err != nil {
 		log.Fatal()
 	}
 }

@@ -18,19 +18,20 @@ func template(mod string) string {
 	return fmt.Sprintf(`package main
 
 import (
-    "log"
-
     "%[1]v/configs"
     "%[1]v/internal/server"
+    "%[1]v/pkg/logger"
 )
 
 func main() {
+	logger := logger.NewLogger()
+
 	config, err := configs.LoadConfig("yml", "configs/config.yml")
 	if err != nil {
 		log.Fatal("load config: ", err)
 	}
 
-	server := server.NewHTTPServer(config)
+	server := server.NewHTTPServer(config, logger)
 	if err := server.ServeHTTP(); err != nil {
 		log.Fatal("start server: ", err)
 	}
