@@ -24,25 +24,29 @@ import (
     "os"
     "os/signal"
     "time"
+
+    "%v/configs"
 )
 
 type Server struct {
-    web *http.ServeMux
+	config *configs.Config
+	web    *http.ServeMux
 }
 
-func NewHTTPServer() *Server {
-    return &Server{
-        web: http.NewServeMux(),
-    }
+func NewHTTPServer(config *configs.Config) *Server {
+	return &Server{
+		config: config,
+		web:    http.NewServeMux(),
+	}
 }
 
 func (s *Server) ServeHTTP() error {
-    server := &http.Server{
-        Addr:         ":8080",
-        Handler:      s.web,
-        ReadTimeout:  time.Second * 30,
-        WriteTimeout: time.Second * 30,
-    }
+	server := &http.Server{
+		Addr:         s.config.Port,
+		Handler:      s.web,
+		ReadTimeout:  time.Second * 30,
+		WriteTimeout: time.Second * 30,
+	}
 
     go func() {
         if err := server.ListenAndServe(); err != nil {
@@ -61,5 +65,5 @@ func (s *Server) ServeHTTP() error {
     defer shutdown()
 
     return server.Shutdown(tc)
-}`)
+}`, mod)
 }

@@ -20,13 +20,19 @@ func template(mod string) string {
 import (
     "log"
 
-    "%v/internal/server"
+    "%[1]v/configs"
+    "%[1]v/internal/server"
 )
 
 func main() {
-    server := server.NewHTTPServer()
-    if err := server.ServeHTTP(); err != nil {
-        log.Fatal(err)
-    }
+	config, err := configs.LoadConfig("yml", "configs/config.yml")
+	if err != nil {
+		log.Fatal("load config: ", err)
+	}
+
+	server := server.NewHTTPServer(config)
+	if err := server.ServeHTTP(); err != nil {
+		log.Fatal("start server: ", err)
+	}
 }`, mod)
 }
