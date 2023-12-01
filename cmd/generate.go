@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	DefaultName = "ggen"
-	DefaultMod  = "github.com/ryanadiputraa/ggen"
+	DefaultName = "go-project"
+	DefaultMod  = "github.com/username/go-project"
 )
 
 var generateCmd = &cobra.Command{

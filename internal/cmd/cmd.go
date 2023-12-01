@@ -11,7 +11,7 @@ func Write(mod, name string) error {
 	if err := writer.CreateDirectory(path); err != nil {
 		return err
 	}
-	return writer.WriteToFile(template(mod), path)
+	return writer.WriteToFile(template(mod), path, "main.go")
 }
 
 func template(mod string) string {

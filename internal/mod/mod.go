@@ -7,8 +7,7 @@ import (
 )
 
 func Write(mod, name string) error {
-	path := fmt.Sprintf("%v", name)
-	return writer.WriteToFile(template(mod), path)
+	return writer.WriteToFile(template(mod), name, "go.mod")
 }
 
 func template(mod string) string {
