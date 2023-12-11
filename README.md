@@ -23,5 +23,5 @@ cd ggen && go build && go install
 ## Usage
 run ggen `generate` command with `name` and `mod` flags to generate go project
 ```bash
-ggen generate -n go-project -m github.com/ryanadiputraa/ggen
+ggen generate -n go-project -m github.com/username/go-project
 ```

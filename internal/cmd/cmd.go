@@ -24,14 +24,14 @@ import (
 )
 
 func main() {
-	logger := logger.NewLogger()
+	log := logger.NewLogger()
 
 	config, err := configs.LoadConfig("yml", "configs/config.yml")
 	if err != nil {
 		log.Fatal("load config: ", err)
 	}
 
-	server := server.NewHTTPServer(config, logger)
+	server := server.NewHTTPServer(config, log)
 	if err := server.ServeHTTP(); err != nil {
 		log.Fatal("start server: ", err)
 	}
