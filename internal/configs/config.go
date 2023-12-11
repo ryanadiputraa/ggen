@@ -28,10 +28,20 @@ import (
 
 type Config struct {
     *Server
+    *Postgres
 }
 
 type Server struct {
     Port string ` + "`mapstructure:\"port\"`" + `
+}
+
+type Postgres struct {
+	Host     string ` + "`mapstructure:\"host\"`" + `
+	Port     string ` + "`mapstructure:\"port\"`" + `
+	User     string ` + "`mapstructure:\"user\"`" + `
+	Password string ` + "`mapstructure:\"password\"`" + `
+	DBName   string ` + "`mapstructure:\"db_name\"`" + `
+	SSLMode  string ` + "`mapstructure:\"ssl_mode\"`" + `
 }
 
 func LoadConfig(configType, filePath string) (*Config, error) {
@@ -51,5 +61,12 @@ func LoadConfig(configType, filePath string) (*Config, error) {
 
 func ymlConfigTemplate() string {
 	return `server:
-    port: :8080`
+    port: :8080
+postgres:
+    host: host
+    port: '5432'
+    user: user
+    password: password
+    db_name: dbname
+    ssl_mode: disable`
 }

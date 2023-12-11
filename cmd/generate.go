@@ -7,6 +7,7 @@ import (
 
 	_cmd "github.com/ryanadiputraa/ggen/internal/cmd"
 	"github.com/ryanadiputraa/ggen/internal/configs"
+	"github.com/ryanadiputraa/ggen/internal/db"
 	"github.com/ryanadiputraa/ggen/internal/domain"
 	"github.com/ryanadiputraa/ggen/internal/handler"
 	"github.com/ryanadiputraa/ggen/internal/logger"
@@ -51,24 +52,27 @@ func generateProject(cmd *cobra.Command, args []string) {
 	}
 
 	if err := _mod.Write(mod, name); err != nil {
-		log.Fatal()
+		log.Fatal(err)
 	}
 	if err := _cmd.Write(mod, name); err != nil {
-		log.Fatal()
+		log.Fatal(err)
 	}
 	if err := configs.Write(mod, name); err != nil {
-		log.Fatal()
+		log.Fatal(err)
 	}
 	if err := domain.Write(mod, name); err != nil {
-		log.Fatal()
+		log.Fatal(err)
 	}
 	if err := server.Write(mod, name); err != nil {
-		log.Fatal()
+		log.Fatal(err)
 	}
 	if err := handler.Write(mod, name); err != nil {
-		log.Fatal()
+		log.Fatal(err)
 	}
 	if err := logger.Write(mod, name); err != nil {
-		log.Fatal()
+		log.Fatal(err)
+	}
+	if err := db.Write(mod, name); err != nil {
+		log.Fatal(err)
 	}
 }

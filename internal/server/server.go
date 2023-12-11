@@ -29,6 +29,7 @@ import (
     "os/signal"
     "time"
 
+	"github.com/jmoiron/sqlx"
     "%[1]v/configs"
     "%[1]v/pkg/logger"
 )
@@ -37,13 +38,15 @@ type Server struct {
 	config *configs.Config
     log    logger.Logger
 	web    *http.ServeMux
+    db     *sqlx.DB
 }
 
-func NewHTTPServer(config *configs.Config, log logger.Logger) *Server {
+func NewHTTPServer(config *configs.Config, log logger.Logger, db *sqlx.DB) *Server {
 	return &Server{
 		config: config,
         log:    log,
 		web:    http.NewServeMux(),
+        db:     db,
 	}
 }
 
@@ -51,14 +54,14 @@ func (s *Server) ServeHTTP() error {
     s.setupHandlers()
 
 	server := &http.Server{
-		Addr:         s.config.Port,
+		Addr:         s.config.Server.Port,
 		Handler:      s.web,
 		ReadTimeout:  time.Second * 30,
 		WriteTimeout: time.Second * 30,
 	}
 
     go func() {
-        s.log.Info("starting server on port", s.config.Port)
+        s.log.Info("starting server on port", s.config.Server.Port)
         if err := server.ListenAndServe(); err != nil {
             s.log.Fatal(err)
         }

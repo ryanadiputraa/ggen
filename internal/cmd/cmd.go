@@ -21,6 +21,7 @@ import (
     "%[1]v/configs"
     "%[1]v/internal/server"
     "%[1]v/pkg/logger"
+    "%[1]v/pkg/db/postgres"
 )
 
 func main() {
@@ -31,7 +32,12 @@ func main() {
 		log.Fatal("load config: ", err)
 	}
 
-	server := server.NewHTTPServer(config, log)
+    db, err := postgres.NewDB(config)
+	if err != nil {
+		log.Fatal("db connection: ", err)
+	}
+
+	server := server.NewHTTPServer(config, log, db)
 	if err := server.ServeHTTP(); err != nil {
 		log.Fatal("start server: ", err)
 	}
