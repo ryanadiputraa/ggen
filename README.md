@@ -10,14 +10,9 @@ https://github.com/golang-standards/project-layout
 
 ## Installation
 
-clone ggen repository
+Install using go
 ```bash
-git clone git@github.com:ryanadiputraa/ggen.git
-```
-
-build and install ggen go binary
-```bash
-cd ggen && go build && go install
+go install github.com/ryanadiputraa/ggen
 ```
 
 ## Usage
