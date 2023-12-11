@@ -11,7 +11,12 @@ func Write(mod, name string) error {
 	if err := writer.CreateDirectory(path); err != nil {
 		return err
 	}
-	return writer.WriteToFile(template(mod), path, "server.go")
+
+	if err := writer.WriteToFile(template(mod), path, "server.go"); err != nil {
+		return err
+	}
+
+	return writer.WriteToFile(handlerTemplate(mod), path, "handler.go")
 }
 
 func template(mod string) string {
@@ -43,6 +48,8 @@ func NewHTTPServer(config *configs.Config, log logger.Logger) *Server {
 }
 
 func (s *Server) ServeHTTP() error {
+    s.setupHandlers()
+
 	server := &http.Server{
 		Addr:         s.config.Port,
 		Handler:      s.web,
@@ -51,7 +58,7 @@ func (s *Server) ServeHTTP() error {
 	}
 
     go func() {
-        s.log.Info("starting server on port ", s.config.Port)
+        s.log.Info("starting server on port", s.config.Port)
         if err := server.ListenAndServe(); err != nil {
             s.log.Fatal(err)
         }
