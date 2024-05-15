@@ -7,11 +7,6 @@ import (
 )
 
 func writeConfigFile(config *config.Config) (err error) {
-	if err = os.Chdir(config.ProjectDir); err != nil {
-		return
-	}
-	defer os.Chdir(config.GgenDir)
-
 	if err = os.Mkdir("config", userPermission); err != nil {
 		return
 	}

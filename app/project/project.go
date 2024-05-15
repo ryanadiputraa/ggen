@@ -5,7 +5,6 @@ import (
 	"io/fs"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/ryanadiputraa/ggen/config"
@@ -36,7 +35,7 @@ func writeFile(config *config.Config, content, destPath string) (err error) {
 	modifiedName := strings.Replace(string(content), "%NAME%", config.ProjectName, -1)
 	modifiedMod := strings.Replace(string(modifiedName), "%MOD%", config.GoMod, -1)
 
-	err = os.WriteFile(filepath.Join(config.ProjectDir, destPath), []byte(modifiedMod), 0644)
+	err = os.WriteFile(destPath, []byte(modifiedMod), 0644)
 	return
 }
 
