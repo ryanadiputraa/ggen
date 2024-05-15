@@ -22,6 +22,11 @@ func NewModule(config *config.Config) (err error) {
 	return
 }
 
+func TidyGoMod() (err error) {
+	c := exec.Command("go", "mod", "tidy")
+	return c.Run()
+}
+
 func createDirectory(dirName string) (err error) {
 	_, err = os.Stat(dirName)
 	if os.IsNotExist(err) {

@@ -48,6 +48,9 @@ func generateProject(cmd *cobra.Command, args []string) {
 	if err = project.GenerateProjectTempalate(cfg); err != nil {
 		log.Fatal(err)
 	}
+	if err = module.TidyGoMod(); err != nil {
+		log.Fatal(err)
+	}
 
 	fmt.Println("Project generated!")
 }
