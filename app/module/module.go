@@ -4,23 +4,25 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+
+	"github.com/ryanadiputraa/ggen/config"
 )
 
-func NewModule(name, module string) (err error) {
+func NewModule(config *config.Config) (err error) {
 	originalDir, err := os.Getwd()
 	if err != nil {
 		return
 	}
 	defer os.Chdir(originalDir)
 
-	if err = createDirectory(name); err != nil {
+	if err = createDirectory(config.ProjectName); err != nil {
 		return
 	}
-	if err = os.Chdir(name); err != nil {
+	if err = os.Chdir(config.ProjectName); err != nil {
 		return err
 	}
 
-	c := exec.Command("go", "mod", "init", module)
+	c := exec.Command("go", "mod", "init", config.GoMod)
 	err = c.Run()
 	return
 }

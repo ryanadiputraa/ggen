@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/ryanadiputraa/ggen/app/module"
+	"github.com/ryanadiputraa/ggen/config"
 	"github.com/spf13/cobra"
 )
 
@@ -39,7 +40,8 @@ func generateProject(cmd *cobra.Command, args []string) {
 		log.Fatal(err)
 	}
 
-	if err = module.NewModule(name, mod); err != nil {
+	cfg := config.NewConfig(name, mod)
+	if err = module.NewModule(cfg); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("Project generated!")
