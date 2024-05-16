@@ -1,6 +1,6 @@
 port: :8080
-db_host: localhost
-db_user: postgres
-db_password: postgres
-db_name: postgres
-db_port: 5432
+postgres_host: localhost
+postgres_user: postgres
+postgres_password: postgres
+postgres_db: postgres
+postgres_port: 5432

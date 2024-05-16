@@ -7,15 +7,15 @@ import (
 )
 
 type Config struct {
-	Port       string `mapstructure:"port"`
-	DBHost     string `mapstructure:"db_host"`
-	DBUser     string `mapstructure:"db_user"`
-	DBPassword string `mapstructure:"db_password"`
-	DBName     string `mapstructure:"db_name"`
-	DBPort     string `mapstructure:"db_port"`
+	Port             string `mapstructure:"port"`
+	PostgresHost     string `mapstructure:"postgres_host"`
+	PostgresUser     string `mapstructure:"postgres_user"`
+	PostgresPassword string `mapstructure:"postgres_password"`
+	PostgresDB       string `mapstructure:"postgres_db"`
+	PostgresPort     string `mapstructure:"postgres_port"`
 }
 
-func NewConfig() (config Config, err error) {
+func NewConfig() (config *Config, err error) {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yml")
 	viper.AddConfigPath("config/")
