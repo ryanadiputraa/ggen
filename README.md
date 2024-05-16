@@ -1,12 +1,9 @@
 # ggen
-A CLI for generating go project that use idiomatic go project standard layout
+A CLI for generating go project, it helps automate the process of creating a new Go project with a predefined directory structure, configuration files, and third party library/package.
 
 More about the project layout referrence can be seen here:
 https://github.com/golang-standards/project-layout
 
-
-## Requirements
-- Go: 1.21.4
 
 ## Installation
 
