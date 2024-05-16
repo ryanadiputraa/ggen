@@ -20,7 +20,16 @@ func GenerateProjectTempalate(config *config.Config) (err error) {
 	if err = writeConfigFile(config); err != nil {
 		return
 	}
-	return
+	if err = writeCMD(config); err != nil {
+		return
+	}
+	if err = writeServer(config); err != nil {
+		return
+	}
+	if err = writeApp(config); err != nil {
+		return
+	}
+	return writePkg(config)
 }
 
 // tmplPath is the file path from templateURL base path
