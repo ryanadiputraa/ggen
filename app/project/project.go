@@ -12,8 +12,7 @@ import (
 
 const (
 	userPermission = fs.FileMode(0700)
-	// TODO: change to main branch
-	templateURL = "https://raw.githubusercontent.com/ryanadiputraa/ggen/refactor/generate-template"
+	templateURL    = "https://raw.githubusercontent.com/ryanadiputraa/ggen/main"
 )
 
 func GenerateProjectTempalate(config *config.Config) (err error) {
