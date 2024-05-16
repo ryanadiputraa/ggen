@@ -3,16 +3,10 @@ package cmd
 import (
 	"fmt"
 	"log"
-	"os/exec"
 
-	_cmd "github.com/ryanadiputraa/ggen/internal/cmd"
-	"github.com/ryanadiputraa/ggen/internal/configs"
-	"github.com/ryanadiputraa/ggen/internal/db"
-	"github.com/ryanadiputraa/ggen/internal/domain"
-	"github.com/ryanadiputraa/ggen/internal/handler"
-	"github.com/ryanadiputraa/ggen/internal/logger"
-	_mod "github.com/ryanadiputraa/ggen/internal/mod"
-	"github.com/ryanadiputraa/ggen/internal/server"
+	"github.com/ryanadiputraa/ggen/app/module"
+	"github.com/ryanadiputraa/ggen/app/project"
+	"github.com/ryanadiputraa/ggen/config"
 	"github.com/spf13/cobra"
 )
 
@@ -42,37 +36,30 @@ func init() {
 
 func generateProject(cmd *cobra.Command, args []string) {
 	fmt.Println("Generating projects...")
-	name, _ := cmd.Flags().GetString("name")
-	mod, _ := cmd.Flags().GetString("mod")
-	fmt.Println(mod)
-
-	c := exec.Command("mkdir", name)
-	if err := c.Run(); err != nil {
+	name, mod, err := getFlags(cmd)
+	if err != nil {
 		log.Fatal(err)
 	}
 
-	if err := _mod.Write(mod, name); err != nil {
+	cfg := config.NewConfig(name, mod)
+	if err = module.NewModule(cfg); err != nil {
 		log.Fatal(err)
 	}
-	if err := _cmd.Write(mod, name); err != nil {
+	if err = project.GenerateProjectTempalate(cfg); err != nil {
 		log.Fatal(err)
 	}
-	if err := configs.Write(mod, name); err != nil {
+	if err = module.TidyGoMod(); err != nil {
 		log.Fatal(err)
 	}
-	if err := domain.Write(mod, name); err != nil {
-		log.Fatal(err)
+
+	fmt.Println("Project generated!")
+}
+
+func getFlags(cmd *cobra.Command) (name, mod string, err error) {
+	name, err = cmd.Flags().GetString("name")
+	if err != nil {
+		return
 	}
-	if err := server.Write(mod, name); err != nil {
-		log.Fatal(err)
-	}
-	if err := handler.Write(mod, name); err != nil {
-		log.Fatal(err)
-	}
-	if err := logger.Write(mod, name); err != nil {
-		log.Fatal(err)
-	}
-	if err := db.Write(mod, name); err != nil {
-		log.Fatal(err)
-	}
+	mod, err = cmd.Flags().GetString("mod")
+	return
 }
