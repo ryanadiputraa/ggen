@@ -7,7 +7,13 @@ import (
 )
 
 func writeApp(config *config.Config) (err error) {
-	if err = os.MkdirAll("app/ggen/", userPermission); err != nil {
+	if err = os.MkdirAll("app/ggen/delivery/http/", userPermission); err != nil {
+		return
+	}
+	if err = os.MkdirAll("app/ggen/repository/", userPermission); err != nil {
+		return
+	}
+	if err = os.MkdirAll("app/ggen/service/", userPermission); err != nil {
 		return
 	}
 
