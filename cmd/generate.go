@@ -18,14 +18,12 @@ const (
 var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "Generate go project",
-	Long: `Generate go project with idiomatic go standard layout.
-
-Usage example:
-ggen generate -n ggen -m github.com/ryanadiputraa/ggen
+	Long: `Generate go project with a predefined directory structure, configuration files, and third party library/package.
 
 More about the project layout referrence can be seen here:
 https://github.com/golang-standards/project-layout`,
-	Run: generateProject,
+	Example: "ggen generate -n ggen -m github.com/ryanadiputraa/ggen",
+	Run:     generateProject,
 }
 
 func init() {
