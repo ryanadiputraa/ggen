@@ -16,7 +16,7 @@ type Cache struct {
 const (
 	userPermission = fs.FileMode(0700)
 	cacheFile      = "cache.json"
-	initTag        = "v0.0.0"
+	InitTag        = "v0.0.0"
 )
 
 func GetCache() (cache Cache, err error) {
@@ -32,7 +32,7 @@ func GetCache() (cache Cache, err error) {
 			return
 		}
 		// return init tag to continue proccess
-		return Cache{Tag: initTag}, nil
+		return Cache{Tag: InitTag}, nil
 	}
 	if err != nil {
 		return Cache{}, fmt.Errorf("fail to check cache status: %v", err)
@@ -42,7 +42,7 @@ func GetCache() (cache Cache, err error) {
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
 			// return init tag to continue proccess
-			return Cache{Tag: initTag}, nil
+			return Cache{Tag: InitTag}, nil
 		}
 		return
 	}
