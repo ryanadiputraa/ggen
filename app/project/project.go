@@ -29,6 +29,7 @@ func GenerateProjectTempalate(config *config.Config) (err error) {
 		c.Tag = cache.InitTag
 	}
 
+	fmt.Println("checking latest tag...")
 	tag, err := checkTag()
 	if err != nil {
 		log.Println("fail to get latest tag: ", err)
@@ -36,33 +37,42 @@ func GenerateProjectTempalate(config *config.Config) (err error) {
 		isUseCache = c.Tag == tag
 	}
 
-	if !isUseCache {
-		fmt.Println("fetching template... (skipping cache")
-		cache.StoreCache(cache.Cache{Tag: tag})
+	if err = writeConfigFile(config, isUseCache, c); err != nil {
+		return
+	}
+	if err = writeCMD(config, isUseCache, c); err != nil {
+		return
+	}
+	if err = writeServer(config, isUseCache, c); err != nil {
+		return
+	}
+	if err = writeApp(config, isUseCache, c); err != nil {
+		return
+	}
+	if err = writePkg(config, isUseCache, c); err != nil {
+		return
 	}
 
-	if err = writeConfigFile(config); err != nil {
-		return
+	if !isUseCache {
+		c.Tag = tag
+		cache.StoreCache(*c)
 	}
-	if err = writeCMD(config); err != nil {
-		return
-	}
-	if err = writeServer(config); err != nil {
-		return
-	}
-	if err = writeApp(config); err != nil {
-		return
-	}
-	return writePkg(config)
+	return
 }
 
-// tmplPath is the file path from github.TemplateURL base path
-func generateTemplateFile(config *config.Config, tmplPath, destPath string) (err error) {
-	content, err := fetchTemplate(tmplPath)
-	if err != nil {
-		return
+// tmplPath is the file path from github.TemplateURL base path, cache can be an empty string is isUseCache is false
+func generateTemplateFile(config *config.Config, tmplPath, destPath, cache string, isUseCache bool) (generated string, err error) {
+	var content string
+
+	if !isUseCache {
+		content, err = fetchTemplate(tmplPath)
+		if err != nil {
+			return
+		}
+	} else {
+		content = cache
 	}
-	return writeFile(config, content, destPath)
+	return content, writeFile(config, content, destPath)
 }
 
 func writeFile(config *config.Config, content, destPath string) (err error) {

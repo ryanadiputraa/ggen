@@ -11,6 +11,17 @@ import (
 
 type Cache struct {
 	Tag string `json:"tag"`
+	// raw code template cache
+	Config     string `json:"config"`
+	ConfigYML  string `json:"config_yml"`
+	CMD        string `json:"cmd"`
+	Server     string `json:"server"`
+	Handler    string `json:"handler"`
+	Delivery   string `json:"delivery"`
+	Service    string `json:"service"`
+	Repository string `json:"repository"`
+	Ggen       string `json:"ggen"`
+	Postgres   string `json:"postgres"`
 }
 
 const (
@@ -19,7 +30,7 @@ const (
 	InitTag        = "v0.0.0"
 )
 
-func GetCache() (cache Cache, err error) {
+func GetCache() (cache *Cache, err error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return
@@ -32,17 +43,17 @@ func GetCache() (cache Cache, err error) {
 			return
 		}
 		// return init tag to continue proccess
-		return Cache{Tag: InitTag}, nil
+		return &Cache{Tag: InitTag}, nil
 	}
 	if err != nil {
-		return Cache{}, fmt.Errorf("fail to check cache status: %v", err)
+		return &Cache{}, fmt.Errorf("fail to check cache status: %v", err)
 	}
 
 	content, err := os.ReadFile(filepath.Join(cachePath, cacheFile))
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
 			// return init tag to continue proccess
-			return Cache{Tag: InitTag}, nil
+			return &Cache{Tag: InitTag}, nil
 		}
 		return
 	}
