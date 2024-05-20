@@ -3,12 +3,17 @@ package project
 import (
 	"os"
 
+	"github.com/ryanadiputraa/ggen/app/cache"
 	"github.com/ryanadiputraa/ggen/config"
 )
 
-func writeCMD(config *config.Config) (err error) {
+func writeCMD(config *config.Config, isUseCache bool, cache *cache.Cache) (err error) {
 	if err = os.MkdirAll("cmd/api/", userPermission); err != nil {
 		return
 	}
-	return generateTemplateFile(config, "/app/template/cmd/api/main.go", "cmd/api/main.go")
+	cache.CMD, err = generateTemplateFile(config, "/app/template/cmd/api/main.go", "cmd/api/main.go", cache.CMD, isUseCache)
+	if err != nil {
+		return
+	}
+	return
 }
