@@ -21,12 +21,12 @@ const (
 
 func GenerateProjectTempalate(config *config.Config) (err error) {
 	isUseCache := false
-	c := cache.Cache{Tag: cache.InitTag}
 
 	fmt.Println("checking cache...")
-	c, err = cache.GetCache()
+	c, err := cache.GetCache()
 	if err != nil {
 		log.Println("fail to check cache: ", err)
+		c.Tag = cache.InitTag
 	}
 
 	tag, err := checkTag()
