@@ -7,7 +7,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Version: "v1.2.0",
+	Version: "ggen1.2.0",
 	Use:     "ggen",
 	Short:   "Go project generator",
 	Long: `A CLI for generating go project, it helps automate the process of creating a new Go project with a predefined directory structure, configuration files, and third party library/package.
