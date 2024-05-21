@@ -7,8 +7,9 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "ggen",
-	Short: "Go project generator",
+	Version: "v1.2.0",
+	Use:     "ggen",
+	Short:   "Go project generator",
 	Long: `A CLI for generating go project, it helps automate the process of creating a new Go project with a predefined directory structure, configuration files, and third party library/package.
 
 More about the project layout referrence can be seen here:
@@ -20,8 +21,4 @@ func Execute() {
 	if err != nil {
 		os.Exit(1)
 	}
-}
-
-func init() {
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
