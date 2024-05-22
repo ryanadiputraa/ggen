@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"database/sql"
 
 	"github.com/ryanadiputraa/ggen/app/template/app/ggen"
@@ -16,7 +17,7 @@ func NewRepository(db *sql.DB) ggen.GgenRepository {
 	}
 }
 
-func (r *repository) FindByID() (id string, err error) {
+func (r *repository) FindByID(ctx context.Context) (id string, err error) {
 	rows, err := r.db.Query("SELECT 'ggen-id'")
 	if err != nil {
 		return

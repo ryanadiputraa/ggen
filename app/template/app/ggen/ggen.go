@@ -1,5 +1,7 @@
 package ggen
 
+import "context"
+
 type Ggen struct {
 	ID string `json:"id"`
 }
@@ -9,9 +11,9 @@ func NewGgeen(ID string) Ggen {
 }
 
 type GgenService interface {
-	GetGgen() (ggen Ggen, err error)
+	GetGgen(ctx context.Context) (ggen Ggen, err error)
 }
 
 type GgenRepository interface {
-	FindByID() (id string, err error)
+	FindByID(ctx context.Context) (id string, err error)
 }

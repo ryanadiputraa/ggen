@@ -19,7 +19,7 @@ func NewHTTPDelivery(web *http.ServeMux, service ggen.GgenService) {
 
 func (d *httpDelivery) TestHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ggen, err := d.service.GetGgen()
+		ggen, err := d.service.GetGgen(r.Context())
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("internal server error"))
