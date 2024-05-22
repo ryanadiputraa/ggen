@@ -1,17 +1,18 @@
 package http
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/ryanadiputraa/ggen/app/template/app/ggen"
+	"github.com/ryanadiputraa/ggen/app/template/pkg/respwr"
 )
 
 type httpDelivery struct {
+	respwr  respwr.ResponseWriter
 	service ggen.GgenService
 }
 
-func NewHTTPDelivery(web *http.ServeMux, service ggen.GgenService) {
+func NewHTTPDelivery(web *http.ServeMux, respwr respwr.ResponseWriter, service ggen.GgenService) {
 	d := &httpDelivery{service: service}
 
 	web.HandleFunc("GET /test", d.TestHandler())
@@ -21,20 +22,10 @@ func (d *httpDelivery) TestHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ggen, err := d.service.GetGgen(r.Context())
 		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("internal server error"))
+			d.respwr.WriteErrMessage(w, http.StatusInternalServerError, "internal server error")
 			return
 		}
 
-		json, err := json.Marshal(ggen)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("internal server error"))
-			return
-		}
-
-		w.WriteHeader(http.StatusOK)
-		w.Header().Add("Content-Type", "application/json")
-		w.Write(json)
+		d.respwr.WriteResponseData(w, http.StatusOK, ggen)
 	}
 }

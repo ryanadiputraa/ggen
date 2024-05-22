@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/ryanadiputraa/ggen/app/template/config"
+	"github.com/ryanadiputraa/ggen/app/template/pkg/respwr"
 )
 
 const requestTimeoutDuration = time.Second * 30
@@ -14,6 +15,7 @@ type Server struct {
 	config *config.Config
 	web    *http.ServeMux
 	db     *sql.DB
+	respwr respwr.ResponseWriter
 }
 
 func NewServer(config *config.Config, db *sql.DB) *Server {
@@ -21,6 +23,7 @@ func NewServer(config *config.Config, db *sql.DB) *Server {
 		config: config,
 		web:    http.NewServeMux(),
 		db:     db,
+		respwr: respwr.NewResponseWriter(),
 	}
 }
 

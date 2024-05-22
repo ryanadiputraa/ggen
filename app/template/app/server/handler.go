@@ -12,7 +12,7 @@ import (
 func (s *Server) setupHandler() http.Handler {
 	ggenRepository := _ggenRepository.NewRepository(s.db)
 	ggenService := _ggenService.NewService(ggenRepository)
-	ggenHTTPDelivery.NewHTTPDelivery(s.web, ggenService)
+	ggenHTTPDelivery.NewHTTPDelivery(s.web, s.respwr, ggenService)
 
 	handler := middleware.CORSMiddleware(s.web)
 	handler = middleware.ThrottleMiddleware(handler)
