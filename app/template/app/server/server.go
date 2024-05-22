@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/ryanadiputraa/ggen/app/template/app/middleware"
 	"github.com/ryanadiputraa/ggen/app/template/config"
 )
 
@@ -24,9 +25,11 @@ func NewServer(config *config.Config, db *sql.DB) *Server {
 
 func (s *Server) ListenAndServe() error {
 	s.setHandlers()
+	handler := middleware.CORSMiddleware(s.web)
+
 	server := &http.Server{
 		Addr:         s.config.Port,
-		Handler:      s.web,
+		Handler:      handler,
 		ReadTimeout:  time.Second * 30,
 		WriteTimeout: time.Second * 30,
 	}
