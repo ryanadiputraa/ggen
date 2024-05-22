@@ -26,6 +26,7 @@ func NewServer(config *config.Config, db *sql.DB) *Server {
 func (s *Server) ListenAndServe() error {
 	s.setHandlers()
 	handler := middleware.CORSMiddleware(s.web)
+	handler = middleware.ThrottleMiddleware(handler)
 
 	server := &http.Server{
 		Addr:         s.config.Port,
