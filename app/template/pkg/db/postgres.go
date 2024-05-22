@@ -29,6 +29,10 @@ func NewPostgres(config *config.Config) (db *sql.DB, err error) {
 		return
 	}
 
+	if err = db.Ping(); err != nil {
+		return
+	}
+
 	db.SetMaxOpenConns(maxOpenConns)
 	db.SetConnMaxLifetime(connMaxLifeTime)
 	db.SetMaxIdleConns(maxIdleConn)
