@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/ryanadiputraa/ggen/app/cache"
@@ -38,18 +39,23 @@ func GenerateProjectTempalate(config *config.Config) (err error) {
 	}
 
 	if err = writeConfigFile(config, isUseCache, c); err != nil {
+		clenaup(config)
 		return
 	}
 	if err = writeCMD(config, isUseCache, c); err != nil {
+		clenaup(config)
 		return
 	}
 	if err = writeServer(config, isUseCache, c); err != nil {
+		clenaup(config)
 		return
 	}
 	if err = writeApp(config, isUseCache, c); err != nil {
+		clenaup(config)
 		return
 	}
 	if err = writePkg(config, isUseCache, c); err != nil {
+		clenaup(config)
 		return
 	}
 
@@ -114,4 +120,19 @@ func checkTag() (tag string, err error) {
 	}
 
 	return tags[0].Name, nil
+}
+
+func clenaup(config *config.Config) {
+	_, err := os.Stat(config.OriginPath)
+	if err != nil {
+		// skip cleanup if project folder doesn't exists
+		if os.IsNotExist(err) {
+			return
+		}
+		return
+	}
+
+	if err := os.RemoveAll(filepath.Join(config.OriginPath, config.ProjectName)); err != nil {
+		log.Println("fail to cleanup: ", err)
+	}
 }

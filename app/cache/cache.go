@@ -2,7 +2,6 @@ package cache
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/fs"
 	"os"
@@ -51,7 +50,7 @@ func GetCache() (cache *Cache, err error) {
 
 	content, err := os.ReadFile(filepath.Join(cachePath, cacheFile))
 	if err != nil {
-		if errors.Is(err, os.ErrNotExist) {
+		if os.IsNotExist(err) {
 			// return init tag to continue proccess
 			return &Cache{Tag: InitTag}, nil
 		}

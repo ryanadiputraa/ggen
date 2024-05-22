@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/ryanadiputraa/ggen/app/module"
 	"github.com/ryanadiputraa/ggen/app/project"
@@ -33,13 +34,21 @@ func init() {
 }
 
 func generateProject(cmd *cobra.Command, args []string) {
+	// Init project name and go mod from flags
 	fmt.Println("Generating projects...")
 	name, mod, err := getFlags(cmd)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	cfg := config.NewConfig(name, mod)
+	// Get project origin patth
+	wd, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Generate project
+	cfg := config.NewConfig(name, mod, wd)
 	if err = module.NewModule(cfg); err != nil {
 		log.Fatal(err)
 	}
