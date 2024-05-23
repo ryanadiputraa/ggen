@@ -16,11 +16,15 @@ type Cache struct {
 	CMD        string `json:"cmd"`
 	Server     string `json:"server"`
 	Handler    string `json:"handler"`
+	Cors       string `json:"cors"`
+	Throttle   string `json:"throttle"`
 	Delivery   string `json:"delivery"`
 	Service    string `json:"service"`
 	Repository string `json:"repository"`
 	Ggen       string `json:"ggen"`
 	Postgres   string `json:"postgres"`
+	Respwr     string `json:"respwr"`
+	Logger     string `json:"logger"`
 }
 
 const (

@@ -50,6 +50,10 @@ func GenerateProjectTempalate(config *config.Config) (err error) {
 		clenaup(config)
 		return
 	}
+	if err = writeMiddlewares(config, isUseCache, c); err != nil {
+		clenaup(config)
+		return
+	}
 	if err = writeApp(config, isUseCache, c); err != nil {
 		clenaup(config)
 		return
