@@ -35,24 +35,35 @@ func (rw *responseWriter) setHeader(w http.ResponseWriter, code int) {
 	w.WriteHeader(code)
 }
 
+func (rw *responseWriter) handleEncodingErr(w http.ResponseWriter) {
+	w.WriteHeader(http.StatusInternalServerError)
+	w.Write([]byte("internal server error"))
+}
+
 func (rw *responseWriter) WriteResponseData(w http.ResponseWriter, code int, data any) {
 	rw.setHeader(w, code)
-	json.NewEncoder(w).Encode(ResponseData{
+	if err := json.NewEncoder(w).Encode(ResponseData{
 		Data: data,
-	})
+	}); err != nil {
+		rw.handleEncodingErr(w)
+	}
 }
 
 func (rw *responseWriter) WriteErrMessage(w http.ResponseWriter, code int, message string) {
 	rw.setHeader(w, code)
-	json.NewEncoder(w).Encode(ErrMessage{
+	if err := json.NewEncoder(w).Encode(ErrMessage{
 		Message: message,
-	})
+	}); err != nil {
+		rw.handleEncodingErr(w)
+	}
 }
 
 func (rw *responseWriter) WriteErrDetails(w http.ResponseWriter, code int, message string, errMap map[string]string) {
 	rw.setHeader(w, code)
-	json.NewEncoder(w).Encode(ErrDetails{
+	if err := json.NewEncoder(w).Encode(ErrDetails{
 		Message: message,
 		Errors:  errMap,
-	})
+	}); err != nil {
+		rw.handleEncodingErr(w)
+	}
 }
