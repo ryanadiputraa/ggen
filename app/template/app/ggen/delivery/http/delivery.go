@@ -13,7 +13,10 @@ type httpDelivery struct {
 }
 
 func NewHTTPDelivery(web *http.ServeMux, respwr respwr.ResponseWriter, service ggen.GgenService) {
-	d := &httpDelivery{service: service}
+	d := &httpDelivery{
+		respwr:  respwr,
+		service: service,
+	}
 
 	web.HandleFunc("GET /test", d.TestHandler())
 }
