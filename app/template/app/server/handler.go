@@ -11,7 +11,7 @@ import (
 
 func (s *Server) setupHandler() http.Handler {
 	ggenRepository := _ggenRepository.NewRepository(s.db)
-	ggenService := _ggenService.NewService(ggenRepository)
+	ggenService := _ggenService.NewService(s.logger, ggenRepository)
 	ggenHTTPDelivery.NewHTTPDelivery(s.web, s.respwr, ggenService)
 
 	handler := middleware.CORSMiddleware(s.web)
