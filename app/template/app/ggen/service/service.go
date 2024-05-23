@@ -24,7 +24,7 @@ func (s *service) GetGgen(ctx context.Context) (val ggen.Ggen, err error) {
 	if err != nil {
 		return
 	}
-	s.logger.Info("fetched id: ", id)
+	s.logger.Info("(ggen service) fetched id: ", id)
 
 	return ggen.NewGgeen(id), nil
 }
