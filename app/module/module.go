@@ -13,7 +13,7 @@ func NewModule(config *config.Config) (err error) {
 		return
 	}
 	if err = os.Chdir(config.ProjectName); err != nil {
-		return err
+		return
 	}
 
 	// init go module

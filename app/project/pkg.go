@@ -2,6 +2,7 @@ package project
 
 import (
 	"os"
+	"sync"
 
 	"github.com/ryanadiputraa/ggen/app/cache"
 	"github.com/ryanadiputraa/ggen/config"
@@ -18,14 +19,30 @@ func writePkg(config *config.Config, isUseCache bool, cache *cache.Cache) (err e
 		return
 	}
 
-	cache.Postgres, err = generateTemplateFile(config, "/app/template/pkg/db/postgres.go", "pkg/db/postgres.go", cache.Postgres, isUseCache)
-	if err != nil {
+	wg := sync.WaitGroup{}
+	errChan := make(chan error, 3)
+
+	runTask(&wg, errChan, func() (err error) {
+		cache.Postgres, err = generateTemplateFile(config, "/app/template/pkg/db/postgres.go", "pkg/db/postgres.go", cache.Postgres, isUseCache)
 		return
-	}
-	cache.Respwr, err = generateTemplateFile(config, "/app/template/pkg/respwr/respwr.go", "pkg/respwr/respwr.go", cache.Respwr, isUseCache)
-	if err != nil {
+	})
+	runTask(&wg, errChan, func() (err error) {
+		cache.Respwr, err = generateTemplateFile(config, "/app/template/pkg/respwr/respwr.go", "pkg/respwr/respwr.go", cache.Respwr, isUseCache)
 		return
+	})
+	runTask(&wg, errChan, func() (err error) {
+		cache.Logger, err = generateTemplateFile(config, "/app/template/pkg/logger/logger.go", "pkg/logger/logger.go", cache.Logger, isUseCache)
+		return
+	})
+
+	wg.Wait()
+	close(errChan)
+
+	for e := range errChan {
+		if e != nil {
+			err = e
+		}
 	}
-	cache.Logger, err = generateTemplateFile(config, "/app/template/pkg/logger/logger.go", "pkg/logger/logger.go", cache.Logger, isUseCache)
+
 	return
 }
