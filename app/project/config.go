@@ -2,6 +2,7 @@ package project
 
 import (
 	"os"
+	"sync"
 
 	"github.com/ryanadiputraa/ggen/app/cache"
 	"github.com/ryanadiputraa/ggen/config"
@@ -12,10 +13,26 @@ func writeConfigFile(config *config.Config, isUseCache bool, cache *cache.Cache)
 		return
 	}
 
-	cache.ConfigYML, err = generateTemplateFile(config, "/app/template/config/config.yml", "config/config.yml", cache.ConfigYML, isUseCache)
-	if err != nil {
+	wg := sync.WaitGroup{}
+	errChan := make(chan error, 2)
+
+	runTask(&wg, errChan, func() (err error) {
+		cache.ConfigYML, err = generateTemplateFile(config, "/app/template/config/config.yml", "config/config.yml", cache.ConfigYML, isUseCache)
 		return
+	})
+	runTask(&wg, errChan, func() (err error) {
+		cache.Config, err = generateTemplateFile(config, "/app/template/config/config.go", "config/config.go", cache.Config, isUseCache)
+		return
+	})
+
+	wg.Wait()
+	close(errChan)
+
+	for e := range errChan {
+		if e != nil {
+			err = e
+		}
 	}
-	cache.Config, err = generateTemplateFile(config, "/app/template/config/config.go", "config/config.go", cache.Config, isUseCache)
+
 	return
 }

@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 
 	"github.com/ryanadiputraa/ggen/app/cache"
 	"github.com/ryanadiputraa/ggen/config"
@@ -38,27 +39,25 @@ func GenerateProjectTempalate(config *config.Config) (err error) {
 		isUseCache = c.Tag == tag
 	}
 
-	if err = writeConfigFile(config, isUseCache, c); err != nil {
-		clenaup(config)
-		return
+	wg := sync.WaitGroup{}
+	templateErr := make(chan error, 6)
+
+	runTask(&wg, templateErr, func() error { return writeConfigFile(config, isUseCache, c) })
+	runTask(&wg, templateErr, func() error { return writeCMD(config, isUseCache, c) })
+	runTask(&wg, templateErr, func() error { return writeServer(config, isUseCache, c) })
+	runTask(&wg, templateErr, func() error { return writeMiddlewares(config, isUseCache, c) })
+	runTask(&wg, templateErr, func() error { return writeApp(config, isUseCache, c) })
+	runTask(&wg, templateErr, func() error { return writePkg(config, isUseCache, c) })
+
+	wg.Wait()
+	close(templateErr)
+
+	for e := range templateErr {
+		if e != nil {
+			err = e
+		}
 	}
-	if err = writeCMD(config, isUseCache, c); err != nil {
-		clenaup(config)
-		return
-	}
-	if err = writeServer(config, isUseCache, c); err != nil {
-		clenaup(config)
-		return
-	}
-	if err = writeMiddlewares(config, isUseCache, c); err != nil {
-		clenaup(config)
-		return
-	}
-	if err = writeApp(config, isUseCache, c); err != nil {
-		clenaup(config)
-		return
-	}
-	if err = writePkg(config, isUseCache, c); err != nil {
+	if err != nil {
 		clenaup(config)
 		return
 	}
@@ -87,7 +86,6 @@ func generateTemplateFile(config *config.Config, tmplPath, destPath, cache strin
 
 func writeFile(config *config.Config, content, destPath string) (err error) {
 	modifiedMod := strings.Replace(string(content), "github.com/ryanadiputraa/ggen/app/template", config.GoMod, -1)
-
 	err = os.WriteFile(destPath, []byte(modifiedMod), 0644)
 	return
 }
@@ -139,4 +137,14 @@ func clenaup(config *config.Config) {
 	if err := os.RemoveAll(filepath.Join(config.OriginPath, config.ProjectName)); err != nil {
 		log.Println("fail to cleanup: ", err)
 	}
+}
+
+func runTask(wg *sync.WaitGroup, ch chan<- error, task func() error) {
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		if err := task(); err != nil {
+			ch <- err
+		}
+	}()
 }
