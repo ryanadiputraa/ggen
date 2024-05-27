@@ -10,7 +10,7 @@ https://github.com/golang-standards/project-layout
 
 Install using go
 ```bash
-go install github.com/ryanadiputraa/ggen
+go install github.com/ryanadiputraa/ggen@latest
 ```
 
 ## Usage
