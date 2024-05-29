@@ -53,7 +53,7 @@ func writeInternal(config *config.Config, isUseCache bool, cache *cache.Cache) (
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
-		cache.Respwr, err = generateTemplateFile(config, "/app/template/internal/respwr/respwr.go", "internal/respwr/respwr.go", cache.Respwr, isUseCache)
+		cache.Respwr, err = generateTemplateFile(config, "/app/template/internal/respwr/http-respwr.go", "internal/respwr/http-respwr.go", cache.Respwr, isUseCache)
 		return
 	})
 
