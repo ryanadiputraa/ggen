@@ -13,6 +13,7 @@ type Config struct {
 	PostgresPassword string `mapstructure:"postgres_password"`
 	PostgresDB       string `mapstructure:"postgres_db"`
 	PostgresPort     string `mapstructure:"postgres_port"`
+	PostgresTimezone string `mapstructure:"postgres_timezone"`
 }
 
 func NewConfig() (config *Config, err error) {

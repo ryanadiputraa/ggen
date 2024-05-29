@@ -36,12 +36,13 @@ func New(config *config.Config) (s Service, err error) {
 		return instance, nil
 	}
 	dsn := fmt.Sprintf(
-		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
+		"host=%v user=%v password=%v dbname=%v port=%v sslmode=disable TimeZone=%v",
+		config.PostgresHost,
 		config.PostgresUser,
 		config.PostgresPassword,
-		config.PostgresHost,
-		config.Port,
 		config.PostgresDB,
+		config.PostgresPort,
+		config.PostgresTimezone,
 	)
 
 	db, err := sql.Open("postgres", dsn)

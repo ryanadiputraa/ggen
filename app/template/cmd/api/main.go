@@ -24,7 +24,7 @@ func main() {
 	}
 
 	s := server.NewServer(c, log, db)
-	log.Info("server running on port %v", c.Port)
+	log.Info("server running on port", c.Port)
 	if err := s.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
