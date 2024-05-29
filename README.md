@@ -6,7 +6,7 @@ A CLI for generating go project, it helps automate the process of creating a new
 
 Install using go
 ```bash
-go install github.com/ryanadiputraa/ggen@latest
+go install github.com/ryanadiputraa/ggen/v2@latest
 ```
 
 ## Usage
