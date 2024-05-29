@@ -5,11 +5,14 @@ import (
 	"net/http"
 )
 
-type responseWriter struct{}
+type httpResponseWriter struct{}
 
-type ResponseWriter interface {
+type HTTPResponseWriter interface {
+	// WriteResponseData write success response contain data field
 	WriteResponseData(w http.ResponseWriter, code int, data any)
+	// WriteResponseData write fail response contain error message
 	WriteErrMessage(w http.ResponseWriter, code int, message string)
+	// WriteResponseData write fail response contain error message and error details
 	WriteErrDetails(w http.ResponseWriter, code int, message string, errMap map[string]string)
 }
 
@@ -26,21 +29,21 @@ type ErrDetails struct {
 	Errors  map[string]string `json:"errors"`
 }
 
-func NewResponseWriter() ResponseWriter {
-	return &responseWriter{}
+func NewHTTPResponseWriter() HTTPResponseWriter {
+	return &httpResponseWriter{}
 }
 
-func (rw *responseWriter) setHeader(w http.ResponseWriter, code int) {
+func (rw *httpResponseWriter) setHeader(w http.ResponseWriter, code int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 }
 
-func (rw *responseWriter) handleEncodingErr(w http.ResponseWriter) {
+func (rw *httpResponseWriter) handleEncodingErr(w http.ResponseWriter) {
 	w.WriteHeader(http.StatusInternalServerError)
 	w.Write([]byte("internal server error"))
 }
 
-func (rw *responseWriter) WriteResponseData(w http.ResponseWriter, code int, data any) {
+func (rw *httpResponseWriter) WriteResponseData(w http.ResponseWriter, code int, data any) {
 	rw.setHeader(w, code)
 	if err := json.NewEncoder(w).Encode(ResponseData{
 		Data: data,
@@ -49,7 +52,7 @@ func (rw *responseWriter) WriteResponseData(w http.ResponseWriter, code int, dat
 	}
 }
 
-func (rw *responseWriter) WriteErrMessage(w http.ResponseWriter, code int, message string) {
+func (rw *httpResponseWriter) WriteErrMessage(w http.ResponseWriter, code int, message string) {
 	rw.setHeader(w, code)
 	if err := json.NewEncoder(w).Encode(ErrMessage{
 		Message: message,
@@ -58,7 +61,7 @@ func (rw *responseWriter) WriteErrMessage(w http.ResponseWriter, code int, messa
 	}
 }
 
-func (rw *responseWriter) WriteErrDetails(w http.ResponseWriter, code int, message string, errMap map[string]string) {
+func (rw *httpResponseWriter) WriteErrDetails(w http.ResponseWriter, code int, message string, errMap map[string]string) {
 	rw.setHeader(w, code)
 	if err := json.NewEncoder(w).Encode(ErrDetails{
 		Message: message,

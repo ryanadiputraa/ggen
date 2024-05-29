@@ -1,14 +1,13 @@
 package server
 
 import (
-	"database/sql"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/ryanadiputraa/ggen/app/template/config"
-	"github.com/ryanadiputraa/ggen/app/template/pkg/logger"
-	"github.com/ryanadiputraa/ggen/app/template/pkg/respwr"
+	"github.com/ryanadiputraa/ggen/app/template/internal/database"
+	"github.com/ryanadiputraa/ggen/app/template/internal/logger"
+	"github.com/ryanadiputraa/ggen/app/template/internal/respwr"
 )
 
 const requestTimeoutDuration = time.Second * 30
@@ -17,17 +16,17 @@ type Server struct {
 	config *config.Config
 	logger logger.Logger
 	web    *http.ServeMux
-	db     *sql.DB
-	respwr respwr.ResponseWriter
+	db     database.Service
+	respwr respwr.HTTPResponseWriter
 }
 
-func NewServer(config *config.Config, db *sql.DB) *Server {
+func NewServer(config *config.Config, logger logger.Logger, db database.Service) *Server {
 	return &Server{
 		config: config,
-		logger: logger.NewLogger(time.UTC, os.Stderr),
+		logger: logger,
 		web:    http.NewServeMux(),
 		db:     db,
-		respwr: respwr.NewResponseWriter(),
+		respwr: respwr.NewHTTPResponseWriter(),
 	}
 }
 

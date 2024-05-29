@@ -18,7 +18,7 @@ type logger struct {
 	log *log.Logger
 }
 
-func NewLogger(location *time.Location, out *os.File) Logger {
+func New(location *time.Location, out *os.File) Logger {
 	l := log.New(out, "", log.Ldate|log.Ltime)
 	l.SetFlags(l.Flags() | log.LUTC)
 	l.SetPrefix(fmt.Sprintf("[%v] ", location.String()))

@@ -9,13 +9,13 @@ import (
 )
 
 func writeApp(config *config.Config, isUseCache bool, cache *cache.Cache) (err error) {
-	if err = os.MkdirAll("app/ggen/delivery/http/", userPermission); err != nil {
+	if err = os.MkdirAll("app/template/delivery/http/", userPermission); err != nil {
 		return
 	}
-	if err = os.MkdirAll("app/ggen/repository/", userPermission); err != nil {
+	if err = os.MkdirAll("app/template/repository/", userPermission); err != nil {
 		return
 	}
-	if err = os.MkdirAll("app/ggen/service/", userPermission); err != nil {
+	if err = os.MkdirAll("app/template/service/", userPermission); err != nil {
 		return
 	}
 
@@ -23,19 +23,19 @@ func writeApp(config *config.Config, isUseCache bool, cache *cache.Cache) (err e
 	errChan := make(chan error, 4)
 
 	runTask(&wg, errChan, func() (err error) {
-		cache.Delivery, err = generateTemplateFile(config, "/app/template/app/ggen/delivery/http/delivery.go", "app/ggen/delivery/http/delivery.go", cache.Delivery, isUseCache)
+		cache.Delivery, err = generateTemplateFile(config, "/app/template/app/template/delivery/http/delivery.go", "app/template/delivery/http/delivery.go", cache.Delivery, isUseCache)
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
-		cache.Repository, err = generateTemplateFile(config, "/app/template/app/ggen/repository/repository.go", "app/ggen/repository/repository.go", cache.Repository, isUseCache)
+		cache.Repository, err = generateTemplateFile(config, "/app/template/app/template/repository/repository.go", "app/template/repository/repository.go", cache.Repository, isUseCache)
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
-		cache.Service, err = generateTemplateFile(config, "/app/template/app/ggen/service/service.go", "app/ggen/service/service.go", cache.Service, isUseCache)
+		cache.Service, err = generateTemplateFile(config, "/app/template/app/template/service/service.go", "app/template/service/service.go", cache.Service, isUseCache)
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
-		cache.Ggen, err = generateTemplateFile(config, "/app/template/app/ggen/ggen.go", "app/ggen/ggen.go", cache.Ggen, isUseCache)
+		cache.Template, err = generateTemplateFile(config, "/app/template/app/template/template.go", "app/template/template.go", cache.Template, isUseCache)
 		return
 	})
 
