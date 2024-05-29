@@ -1,8 +1,7 @@
 package github
 
 const (
-	// TODO: revert
-	TemplateURL = "https://raw.githubusercontent.com/ryanadiputraa/ggen/refactor/structure"
+	TemplateURL = "https://raw.githubusercontent.com/ryanadiputraa/ggen/main"
 	TagURL      = "https://api.github.com/repos/ryanadiputraa/ggen/tags"
 )
 

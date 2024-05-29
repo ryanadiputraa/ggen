@@ -42,8 +42,6 @@ func GenerateProjectTempalate(config *config.Config) (err error) {
 	wg := sync.WaitGroup{}
 	templateErr := make(chan error, 4)
 
-	// TODO: remove
-	isUseCache = false
 	runTask(&wg, templateErr, func() error { return writeCMD(config, isUseCache, c) })
 	runTask(&wg, templateErr, func() error { return writeConfigFile(config, isUseCache, c) })
 	runTask(&wg, templateErr, func() error { return writeInternal(config, isUseCache, c) })
