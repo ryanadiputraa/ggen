@@ -4,8 +4,8 @@ import (
 	"os"
 	"sync"
 
-	"github.com/ryanadiputraa/ggen/app/cache"
-	"github.com/ryanadiputraa/ggen/config"
+	"github.com/ryanadiputraa/ggen/v2/app/cache"
+	"github.com/ryanadiputraa/ggen/v2/config"
 )
 
 func writeConfigFile(config *config.Config, isUseCache bool, cache *cache.Cache) (err error) {

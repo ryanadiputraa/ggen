@@ -7,7 +7,7 @@ import (
 	"time"
 
 	_ "github.com/lib/pq"
-	"github.com/ryanadiputraa/ggen/app/template/config"
+	"github.com/ryanadiputraa/ggen/v2/app/template/config"
 )
 
 type Service interface {

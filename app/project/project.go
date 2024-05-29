@@ -12,9 +12,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/ryanadiputraa/ggen/app/cache"
-	"github.com/ryanadiputraa/ggen/config"
-	"github.com/ryanadiputraa/ggen/pkg/github"
+	"github.com/ryanadiputraa/ggen/v2/app/cache"
+	"github.com/ryanadiputraa/ggen/v2/config"
+	"github.com/ryanadiputraa/ggen/v2/pkg/github"
 )
 
 const (

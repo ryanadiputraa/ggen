@@ -4,10 +4,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/ryanadiputraa/ggen/app/template/config"
-	"github.com/ryanadiputraa/ggen/app/template/internal/database"
-	"github.com/ryanadiputraa/ggen/app/template/internal/logger"
-	"github.com/ryanadiputraa/ggen/app/template/internal/server"
+	"github.com/ryanadiputraa/ggen/v2/app/template/config"
+	"github.com/ryanadiputraa/ggen/v2/app/template/internal/database"
+	"github.com/ryanadiputraa/ggen/v2/app/template/internal/logger"
+	"github.com/ryanadiputraa/ggen/v2/app/template/internal/server"
 )
 
 func main() {

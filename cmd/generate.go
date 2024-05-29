@@ -5,9 +5,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/ryanadiputraa/ggen/app/module"
-	"github.com/ryanadiputraa/ggen/app/project"
-	"github.com/ryanadiputraa/ggen/config"
+	"github.com/ryanadiputraa/ggen/v2/app/module"
+	"github.com/ryanadiputraa/ggen/v2/app/project"
+	"github.com/ryanadiputraa/ggen/v2/config"
 	"github.com/spf13/cobra"
 )
 

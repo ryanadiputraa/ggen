@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ryanadiputraa/ggen/cmd"
+	"github.com/ryanadiputraa/ggen/v2/cmd"
 )
 
 func main() {

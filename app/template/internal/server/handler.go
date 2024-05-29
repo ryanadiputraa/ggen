@@ -3,10 +3,10 @@ package server
 import (
 	"net/http"
 
-	templateHTTPDelivery "github.com/ryanadiputraa/ggen/app/template/app/template/delivery/http"
-	_templateRepository "github.com/ryanadiputraa/ggen/app/template/app/template/repository"
-	_templateService "github.com/ryanadiputraa/ggen/app/template/app/template/service"
-	"github.com/ryanadiputraa/ggen/app/template/internal/middleware"
+	templateHTTPDelivery "github.com/ryanadiputraa/ggen/v2/app/template/app/template/delivery/http"
+	_templateRepository "github.com/ryanadiputraa/ggen/v2/app/template/app/template/repository"
+	_templateService "github.com/ryanadiputraa/ggen/v2/app/template/app/template/service"
+	"github.com/ryanadiputraa/ggen/v2/app/template/internal/middleware"
 )
 
 func (s *Server) setupHandler() http.Handler {

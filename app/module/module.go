@@ -5,7 +5,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/ryanadiputraa/ggen/config"
+	"github.com/ryanadiputraa/ggen/v2/config"
 )
 
 func NewModule(config *config.Config) (err error) {
