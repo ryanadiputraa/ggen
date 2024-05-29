@@ -83,7 +83,7 @@ func generateTemplateFile(config *config.Config, tmplPath, destPath, cache strin
 }
 
 func writeFile(config *config.Config, content, destPath string) (err error) {
-	modifiedMod := strings.Replace(string(content), "github.com/ryanadiputraa/ggen/app/template", config.GoMod, -1)
+	modifiedMod := strings.Replace(string(content), "github.com/ryanadiputraa/ggen/v2/app/template", config.GoMod, -1)
 	err = os.WriteFile(destPath, []byte(modifiedMod), 0644)
 	return
 }
