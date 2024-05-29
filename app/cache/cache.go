@@ -21,8 +21,8 @@ type Cache struct {
 	Delivery   string `json:"delivery"`
 	Service    string `json:"service"`
 	Repository string `json:"repository"`
-	Ggen       string `json:"ggen"`
-	Postgres   string `json:"postgres"`
+	Template   string `json:"template"`
+	Database   string `json:"database"`
 	Respwr     string `json:"respwr"`
 	Logger     string `json:"logger"`
 }
