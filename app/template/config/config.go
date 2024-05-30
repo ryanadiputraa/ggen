@@ -1,34 +1,23 @@
 package config
 
 import (
-	"errors"
+	"os"
 
-	"github.com/spf13/viper"
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
-	Port             string `mapstructure:"port"`
-	PostgresHost     string `mapstructure:"postgres_host"`
-	PostgresUser     string `mapstructure:"postgres_user"`
-	PostgresPassword string `mapstructure:"postgres_password"`
-	PostgresDB       string `mapstructure:"postgres_db"`
-	PostgresPort     string `mapstructure:"postgres_port"`
-	PostgresTimezone string `mapstructure:"postgres_timezone"`
+	Port string `mapstructure:"PORT"`
 }
 
-func NewConfig() (config *Config, err error) {
-	viper.SetConfigName("config")
-	viper.SetConfigType("yml")
-	viper.AddConfigPath("config/")
-
-	if err = viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			err = errors.New("config file not found")
-			return
-		}
+func LoadConfig() (config Config, err error) {
+	if err = godotenv.Load(); err != nil {
 		return
 	}
 
-	err = viper.Unmarshal(&config)
+	port := os.Getenv("PORT")
+	config = Config{
+		Port: port,
+	}
 	return
 }
