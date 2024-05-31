@@ -23,6 +23,8 @@ type Cache struct {
 	Postgres      string `json:"postgres"`
 	Respwr        string `json:"respwr"`
 	Logger        string `json:"logger"`
+	Makefile      string `json:"makefile"`
+	Readme        string `json:"readme"`
 }
 
 const (
