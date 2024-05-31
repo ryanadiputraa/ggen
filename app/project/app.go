@@ -9,33 +9,19 @@ import (
 )
 
 func writeApp(config *config.Config, isUseCache bool, cache *cache.Cache) (err error) {
-	if err = os.MkdirAll("app/template/delivery/http/", userPermission); err != nil {
-		return
-	}
-	if err = os.MkdirAll("app/template/repository/", userPermission); err != nil {
-		return
-	}
-	if err = os.MkdirAll("app/template/service/", userPermission); err != nil {
+	if err = os.MkdirAll("app/server/", userPermission); err != nil {
 		return
 	}
 
 	wg := sync.WaitGroup{}
-	errChan := make(chan error, 4)
+	errChan := make(chan error, 2)
 
 	runTask(&wg, errChan, func() (err error) {
-		cache.Delivery, err = generateTemplateFile(config, "/app/template/app/template/delivery/http/delivery.go", "app/template/delivery/http/delivery.go", cache.Delivery, isUseCache)
+		cache.Server, err = generateTemplateFile(config, "/app/template/app/server/server.go", "app/server/server.go", cache.Server, isUseCache)
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
-		cache.Repository, err = generateTemplateFile(config, "/app/template/app/template/repository/repository.go", "app/template/repository/repository.go", cache.Repository, isUseCache)
-		return
-	})
-	runTask(&wg, errChan, func() (err error) {
-		cache.Service, err = generateTemplateFile(config, "/app/template/app/template/service/service.go", "app/template/service/service.go", cache.Service, isUseCache)
-		return
-	})
-	runTask(&wg, errChan, func() (err error) {
-		cache.Template, err = generateTemplateFile(config, "/app/template/app/template/template.go", "app/template/template.go", cache.Template, isUseCache)
+		cache.Handler, err = generateTemplateFile(config, "/app/template/app/server/handler.go", "app/server/handler.go", cache.Handler, isUseCache)
 		return
 	})
 

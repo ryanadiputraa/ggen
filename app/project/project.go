@@ -44,10 +44,10 @@ func GenerateProjectTempalate(config *config.Config) (err error) {
 
 	// TOOD: refactor template
 
-	runTask(&wg, templateErr, func() error { return writeCMD(config, isUseCache, c) })
-	runTask(&wg, templateErr, func() error { return writeConfigFile(config, isUseCache, c) })
-	runTask(&wg, templateErr, func() error { return writeInternal(config, isUseCache, c) })
 	runTask(&wg, templateErr, func() error { return writeApp(config, isUseCache, c) })
+	runTask(&wg, templateErr, func() error { return writeCMD(config, isUseCache, c) })
+	runTask(&wg, templateErr, func() error { return writeConfig(config, isUseCache, c) })
+	runTask(&wg, templateErr, func() error { return writePkg(config, isUseCache, c) })
 
 	wg.Wait()
 	close(templateErr)

@@ -11,20 +11,16 @@ import (
 type Cache struct {
 	Tag string `json:"tag"`
 	// raw code template cache
-	Config     string `json:"config"`
-	ConfigYML  string `json:"config_yml"`
-	CMD        string `json:"cmd"`
-	Server     string `json:"server"`
-	Handler    string `json:"handler"`
-	Cors       string `json:"cors"`
-	Throttle   string `json:"throttle"`
-	Delivery   string `json:"delivery"`
-	Service    string `json:"service"`
-	Repository string `json:"repository"`
-	Template   string `json:"template"`
-	Database   string `json:"database"`
-	Respwr     string `json:"respwr"`
-	Logger     string `json:"logger"`
+	Config   string `json:"config"`
+	Env      string `json:"env"`
+	CMD      string `json:"cmd"`
+	Server   string `json:"server"`
+	Handler  string `json:"handler"`
+	Cors     string `json:"cors"`
+	Throttle string `json:"throttle"`
+	Postgres string `json:"postgres"`
+	Respwr   string `json:"respwr"`
+	Logger   string `json:"logger"`
 }
 
 const (

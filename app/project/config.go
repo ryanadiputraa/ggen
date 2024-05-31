@@ -8,7 +8,7 @@ import (
 	"github.com/ryanadiputraa/ggen/v2/config"
 )
 
-func writeConfigFile(config *config.Config, isUseCache bool, cache *cache.Cache) (err error) {
+func writeConfig(config *config.Config, isUseCache bool, cache *cache.Cache) (err error) {
 	if err = os.Mkdir("config", userPermission); err != nil {
 		return
 	}
@@ -17,7 +17,7 @@ func writeConfigFile(config *config.Config, isUseCache bool, cache *cache.Cache)
 	errChan := make(chan error, 2)
 
 	runTask(&wg, errChan, func() (err error) {
-		cache.ConfigYML, err = generateTemplateFile(config, "/app/template/config/config.yml", "config/config.yml", cache.ConfigYML, isUseCache)
+		cache.Env, err = generateTemplateFile(config, "/app/template/.env.example", ".env.example", cache.Env, isUseCache)
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
