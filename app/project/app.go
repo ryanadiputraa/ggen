@@ -24,7 +24,7 @@ func writeApp(config *config.Config, isUseCache bool, cache *cache.Cache) (err e
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
-		cache.Handler, err = generateTemplateFile(config, "/app/template/app/server/handler.go", "app/server/handler.go", cache.Handler, isUseCache)
+		cache.Handler, err = generateTemplateFile(config, "/app/template/app/server/handlers.go", "app/server/handlers.go", cache.Handler, isUseCache)
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
