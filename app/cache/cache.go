@@ -11,16 +11,18 @@ import (
 type Cache struct {
 	Tag string `json:"tag"`
 	// raw code template cache
-	Config   string `json:"config"`
-	Env      string `json:"env"`
-	CMD      string `json:"cmd"`
-	Server   string `json:"server"`
-	Handler  string `json:"handler"`
-	Cors     string `json:"cors"`
-	Throttle string `json:"throttle"`
-	Postgres string `json:"postgres"`
-	Respwr   string `json:"respwr"`
-	Logger   string `json:"logger"`
+	Config        string `json:"config"`
+	Env           string `json:"env"`
+	CMD           string `json:"cmd"`
+	Server        string `json:"server"`
+	Handler       string `json:"handler"`
+	Health        string `json:"health"`
+	HealthHandler string `json:"health_hadler"`
+	Cors          string `json:"cors"`
+	Throttle      string `json:"throttle"`
+	Postgres      string `json:"postgres"`
+	Respwr        string `json:"respwr"`
+	Logger        string `json:"logger"`
 }
 
 const (

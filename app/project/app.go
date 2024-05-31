@@ -12,9 +12,12 @@ func writeApp(config *config.Config, isUseCache bool, cache *cache.Cache) (err e
 	if err = os.MkdirAll("app/server/", userPermission); err != nil {
 		return
 	}
+	if err = os.MkdirAll("app/health/delivery/http/", userPermission); err != nil {
+		return
+	}
 
 	wg := sync.WaitGroup{}
-	errChan := make(chan error, 2)
+	errChan := make(chan error, 4)
 
 	runTask(&wg, errChan, func() (err error) {
 		cache.Server, err = generateTemplateFile(config, "/app/template/app/server/server.go", "app/server/server.go", cache.Server, isUseCache)
@@ -22,6 +25,14 @@ func writeApp(config *config.Config, isUseCache bool, cache *cache.Cache) (err e
 	})
 	runTask(&wg, errChan, func() (err error) {
 		cache.Handler, err = generateTemplateFile(config, "/app/template/app/server/handler.go", "app/server/handler.go", cache.Handler, isUseCache)
+		return
+	})
+	runTask(&wg, errChan, func() (err error) {
+		cache.Health, err = generateTemplateFile(config, "/app/template/app/health/health.go", "app/health/health.go", cache.Health, isUseCache)
+		return
+	})
+	runTask(&wg, errChan, func() (err error) {
+		cache.HealthHandler, err = generateTemplateFile(config, "/app/template/app/health/delivery/http/http.go", "app/health/delivery/http/http.go", cache.HealthHandler, isUseCache)
 		return
 	})
 
