@@ -25,6 +25,6 @@ func main() {
 
 	s := server.NewServer(c, log, db)
 	if err := s.ListenAndServe(); err != nil {
-		log.Fatal("start server:", err)
+		log.Fatal("server:", err)
 	}
 }
