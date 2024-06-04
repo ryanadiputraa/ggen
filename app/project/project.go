@@ -40,7 +40,7 @@ func GenerateProjectTempalate(config *config.Config) (err error) {
 	}
 
 	wg := sync.WaitGroup{}
-	templateErr := make(chan error, 4)
+	templateErr := make(chan error, 5)
 
 	// TOOD: refactor template
 
@@ -48,6 +48,7 @@ func GenerateProjectTempalate(config *config.Config) (err error) {
 	runTask(&wg, templateErr, func() error { return writeMain(config, isUseCache, c) })
 	runTask(&wg, templateErr, func() error { return writeConfig(config, isUseCache, c) })
 	runTask(&wg, templateErr, func() error { return writePkg(config, isUseCache, c) })
+	runTask(&wg, templateErr, func() error { return writeTest(config, isUseCache, c) })
 
 	wg.Wait()
 	close(templateErr)
