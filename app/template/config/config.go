@@ -7,7 +7,8 @@ import (
 )
 
 type Config struct {
-	Port string `mapstructure:"PORT"`
+	Port        string `mapstructure:"PORT"`
+	PostgresDSN string `mapstructure:"POSTGRES_DSN"`
 }
 
 func LoadConfig() (config Config, err error) {

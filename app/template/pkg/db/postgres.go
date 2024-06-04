@@ -3,7 +3,6 @@ package db
 import (
 	"context"
 	"database/sql"
-	"os"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -16,8 +15,7 @@ const (
 	connMaxIdleTime = 20
 )
 
-func NewPostgres() (dv *sql.DB, err error) {
-	dsn := os.Getenv("POSTGRES_DSN")
+func NewPostgres(dsn string) (dv *sql.DB, err error) {
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		return

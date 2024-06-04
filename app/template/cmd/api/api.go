@@ -20,12 +20,12 @@ func Run() {
 
 	config, err := config.LoadConfig()
 	if err != nil {
-		log.Fatal("fail to load config:", err)
+		log.Fatal("error loading config file. Err:", err)
 	}
 
-	db, err := db.NewPostgres()
+	db, err := db.NewPostgres(config.PostgresDSN)
 	if err != nil {
-		logger.Fatal("error postgres:", err)
+		logger.Fatal("error opening postgres connection. Err:", err)
 	}
 
 	s := server.NewServer(config, logger, db)
