@@ -14,10 +14,14 @@ func writeMain(config *config.Config, isUseCache bool, cache *cache.Cache) (err 
 	}
 
 	wg := sync.WaitGroup{}
-	errChan := make(chan error, 3)
+	errChan := make(chan error, 4)
 
 	runTask(&wg, errChan, func() (err error) {
-		cache.CMD, err = generateTemplateFile(config, "/app/template/cmd/api/main.go", "cmd/api/main.go", cache.CMD, isUseCache)
+		cache.Main, err = generateTemplateFile(config, "/app/template/main.go", "main.go", cache.Main, isUseCache)
+		return
+	})
+	runTask(&wg, errChan, func() (err error) {
+		cache.CMD, err = generateTemplateFile(config, "/app/template/cmd/api/api.go", "cmd/api/api.go", cache.CMD, isUseCache)
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
