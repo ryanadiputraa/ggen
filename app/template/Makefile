@@ -2,6 +2,6 @@ run:
 	@go run main.go
 
 test:
-	@go test ./... -v -cover
+	@go test ./... -v
 
-.PHONY: run
+.PHONY: run test
