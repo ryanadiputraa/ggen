@@ -29,7 +29,6 @@ func Run() {
 	}
 
 	s := server.NewServer(config, logger, db)
-	defer s.Close()
 
 	go func() {
 		done := make(chan os.Signal, 1)

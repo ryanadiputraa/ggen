@@ -1,4 +1,4 @@
 run:
-	@go run cmd/api/main.go
+	@go run main.go
 
 .PHONY: run

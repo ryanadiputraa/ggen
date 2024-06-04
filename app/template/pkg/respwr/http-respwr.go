@@ -16,8 +16,8 @@ type HTTPResponseWriter interface {
 	WriteErrDetails(w http.ResponseWriter, code int, message string, errMap map[string]string)
 }
 
-type ResponseData struct {
-	Data any `json:"data"`
+type ResponseData[T any] struct {
+	Data T `json:"data"`
 }
 
 type ErrMessage struct {
@@ -45,7 +45,7 @@ func (rw *httpResponseWriter) handleEncodingErr(w http.ResponseWriter) {
 
 func (rw *httpResponseWriter) WriteResponseData(w http.ResponseWriter, code int, data any) {
 	rw.setHeader(w, code)
-	if err := json.NewEncoder(w).Encode(ResponseData{
+	if err := json.NewEncoder(w).Encode(ResponseData[any]{
 		Data: data,
 	}); err != nil {
 		rw.handleEncodingErr(w)
