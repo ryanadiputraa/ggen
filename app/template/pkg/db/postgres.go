@@ -22,7 +22,7 @@ func NewPostgres(dsn string) (dv *sql.DB, err error) {
 	}
 
 	// Health check by pinging database with timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	if err = db.PingContext(ctx); err != nil {
 		return

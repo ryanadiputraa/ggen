@@ -7,8 +7,8 @@ import (
 )
 
 type Config struct {
-	Port        string `mapstructure:"PORT"`
-	PostgresDSN string `mapstructure:"POSTGRES_DSN"`
+	Port        string
+	PostgresDSN string
 }
 
 func LoadConfig() (config Config, err error) {
@@ -16,9 +16,9 @@ func LoadConfig() (config Config, err error) {
 		return
 	}
 
-	port := os.Getenv("PORT")
 	config = Config{
-		Port: port,
+		Port:        os.Getenv("PORT"),
+		PostgresDSN: os.Getenv("POSTGRES_DSN"),
 	}
 	return
 }
