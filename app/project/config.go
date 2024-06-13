@@ -14,14 +14,14 @@ func writeConfig(config *config.Config, isUseCache bool, cache *cache.Cache) (er
 	}
 
 	wg := sync.WaitGroup{}
-	errChan := make(chan error, 2)
+	errChan := make(chan error, 3)
 
 	runTask(&wg, errChan, func() (err error) {
 		cache.Env, err = generateTemplateFile(config, "/app/template/.env.example", ".env.example", cache.Env, isUseCache)
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
-		cache.Config, err = generateTemplateFile(config, "/app/template/config/config.go", "config/config.go", cache.Config, isUseCache)
+		cache.Compose, err = generateTemplateFile(config, "/app/template/docker-compose.yml", "docker-compose.yml", cache.Compose, isUseCache)
 		return
 	})
 

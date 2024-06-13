@@ -13,6 +13,7 @@ type Cache struct {
 	// raw code template cache
 	Config             string `json:"config"`
 	Env                string `json:"env"`
+	Compose            string `json:"compose"`
 	Main               string `json:"main"`
 	CMD                string `json:"cmd"`
 	Server             string `json:"server"`
