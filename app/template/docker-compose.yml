@@ -7,7 +7,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=kaling
+      - POSTGRES_DB=<project_name>
     ports:
       - 5432:5432
     healthcheck:
