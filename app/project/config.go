@@ -24,6 +24,10 @@ func writeConfig(config *config.Config, isUseCache bool, cache *cache.Cache) (er
 		cache.Compose, err = generateTemplateFile(config, "/app/template/docker-compose.yml", "docker-compose.yml", cache.Compose, isUseCache)
 		return
 	})
+	runTask(&wg, errChan, func() (err error) {
+		cache.Config, err = generateTemplateFile(config, "/app/template/config/config.go", "config/config.go", cache.Config, isUseCache)
+		return
+	})
 
 	wg.Wait()
 	close(errChan)
