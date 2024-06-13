@@ -1,14 +1,21 @@
-# Project Name
-
-One Paragraph project description.
+# <project_name>
+Project generated using [ggen](https://github.com/ryanadiputraa/ggen)
 
 ## Getting Started
 
-Getting started description.
+Setup your development database service and adjust or start with `docker compose`:
+```bash
+make service
+```
 
-## MakeFile
+Copy and adjust `.env.example` into `.env`
 
-start development server
+Run test:
+```bash
+make test
+```
+
+Start development server
 ```bash
 make run
 ```
