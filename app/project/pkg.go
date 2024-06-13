@@ -42,7 +42,7 @@ func writePkg(config *config.Config, isUseCache bool, cache *cache.Cache) (err e
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
-		cache.Respwr, err = generateTemplateFile(config, "/app/template/pkg/respwr/http-respwr.go", "pkg/respwr/http-respwr.go", cache.Respwr, isUseCache)
+		cache.Respwr, err = generateTemplateFile(config, "/app/template/pkg/respwr/http_respwr.go", "pkg/respwr/http_respwr.go", cache.Respwr, isUseCache)
 		return
 	})
 

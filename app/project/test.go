@@ -17,11 +17,11 @@ func writeTest(config *config.Config, isUseCache bool, cache *cache.Cache) (err 
 	errChan := make(chan error, 2)
 
 	runTask(&wg, errChan, func() (err error) {
-		cache.TestSetup, err = generateTemplateFile(config, "/app/template/test/setup.go", "test/setup.go", cache.TestSetup, isUseCache)
+		cache.SetupTest, err = generateTemplateFile(config, "/app/template/test/setup.go", "test/setup.go", cache.SetupTest, isUseCache)
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
-		cache.TestHealthcheck, err = generateTemplateFile(config, "/app/template/test/test_healthcheck.go", "test/test_healthcheck.go", cache.TestHealthcheck, isUseCache)
+		cache.HealthcheckTest, err = generateTemplateFile(config, "/app/template/test/healthcheck_test.go", "test/healthcheck_test.go", cache.HealthcheckTest, isUseCache)
 		return
 	})
 

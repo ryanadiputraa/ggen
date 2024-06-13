@@ -26,8 +26,8 @@ type Cache struct {
 	Logger             string `json:"logger"`
 	Makefile           string `json:"makefile"`
 	Readme             string `json:"readme"`
-	TestSetup          string `json:"test_setup"`
-	TestHealthcheck    string `json:"test_healthcheck"`
+	SetupTest          string `json:"setup_test"`
+	HealthcheckTest    string `json:"healthcheck_test"`
 }
 
 const (
