@@ -23,7 +23,7 @@ func writePkg(config *config.Config, isUseCache bool, cache *cache.Cache) (err e
 	}
 
 	wg := sync.WaitGroup{}
-	errChan := make(chan error, 5)
+	errChan := make(chan error, 7)
 
 	runTask(&wg, errChan, func() (err error) {
 		cache.Postgres, err = generateTemplateFile(config, "/app/template/pkg/db/postgres.go", "pkg/db/postgres.go", cache.Postgres, isUseCache)
@@ -34,11 +34,19 @@ func writePkg(config *config.Config, isUseCache bool, cache *cache.Cache) (err e
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
+		cache.Middleware, err = generateTemplateFile(config, "/app/template/pkg/middleware/middleware.go", "pkg/middleware/middleware.go", cache.Middleware, isUseCache)
+		return
+	})
+	runTask(&wg, errChan, func() (err error) {
 		cache.Cors, err = generateTemplateFile(config, "/app/template/pkg/middleware/cors.go", "pkg/middleware/cors.go", cache.Cors, isUseCache)
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
 		cache.Throttle, err = generateTemplateFile(config, "/app/template/pkg/middleware/throttle.go", "pkg/middleware/throttle.go", cache.Throttle, isUseCache)
+		return
+	})
+	runTask(&wg, errChan, func() (err error) {
+		cache.Timeout, err = generateTemplateFile(config, "/app/template/pkg/middleware/timeout.go", "pkg/middleware/timeout.go", cache.Timeout, isUseCache)
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
