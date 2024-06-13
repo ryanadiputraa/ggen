@@ -28,11 +28,11 @@ func NewServer(config config.Config, logger logger.Logger, db *sql.DB) *http.Ser
 		db:     db,
 		respwr: respwr.NewHTTPResponseWriter(),
 	}
-	handler := setupHandlers(s)
+	s.setupHandlers()
 
 	server := &http.Server{
 		Addr:    config.Port,
-		Handler: handler,
+		Handler: s.web,
 	}
 	return server
 }

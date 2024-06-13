@@ -1,21 +1,16 @@
 package server
 
 import (
-	"net/http"
-
 	_healthcheckHandler "github.com/ryanadiputraa/ggen/v2/app/template/app/healthcheck/handler"
 	"github.com/ryanadiputraa/ggen/v2/app/template/pkg/middleware"
 	"github.com/ryanadiputraa/ggen/v2/app/template/pkg/respwr"
 )
 
-func setupHandlers(s Server) http.Handler {
-	handler := middleware.CORSMiddleware(s.web)
-	handler = middleware.ThrottleMiddleware(handler)
-	handler = http.TimeoutHandler(handler, requestTimeoutDuration, "request timeout")
-
+func (s *Server) setupHandlers() {
 	respwr := respwr.NewHTTPResponseWriter()
+	middlewares := middleware.NewMiddlewares()
+
 	healthcheckHandler := _healthcheckHandler.NewHTTPHandler(respwr)
 
-	s.web.Handle("GET /healthcheck", healthcheckHandler.Healthcheck())
-	return handler
+	s.web.Handle("GET /healthcheck", middlewares(healthcheckHandler.Healthcheck()))
 }

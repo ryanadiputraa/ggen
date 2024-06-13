@@ -8,13 +8,13 @@ import (
 
 var limiter = rate.NewLimiter(rate.Limit(100), 200)
 
-func ThrottleMiddleware(next http.Handler) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func ThrottleMiddleware(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if !limiter.Allow() {
 			w.WriteHeader(http.StatusTooManyRequests)
 			w.Write([]byte("too many request"))
 			return
 		}
-		next.ServeHTTP(w, r)
-	}
+		h.ServeHTTP(w, r)
+	})
 }
