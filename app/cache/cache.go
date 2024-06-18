@@ -27,6 +27,8 @@ type Cache struct {
 	Postgres           string `json:"postgres"`
 	Respwr             string `json:"respwr"`
 	Logger             string `json:"logger"`
+	Gitignore          string `json:"gitignore"`
+	Air                string `json:"air"`
 	Makefile           string `json:"makefile"`
 	Readme             string `json:"readme"`
 	SetupTest          string `json:"setup_test"`

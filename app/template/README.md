@@ -15,7 +15,12 @@ Run test:
 make test
 ```
 
-Start development server
+Start development server with [air](https://github.com/air-verse/air) (hot reload):
+```bash
+make dev
+```
+
+Or without hot reload:
 ```bash
 make run
 ```

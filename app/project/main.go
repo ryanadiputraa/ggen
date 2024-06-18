@@ -14,7 +14,7 @@ func writeMain(config *config.Config, isUseCache bool, cache *cache.Cache) (err 
 	}
 
 	wg := sync.WaitGroup{}
-	errChan := make(chan error, 4)
+	errChan := make(chan error, 6)
 
 	runTask(&wg, errChan, func() (err error) {
 		cache.Main, err = generateTemplateFile(config, "/app/template/main.go", "main.go", cache.Main, isUseCache)
@@ -22,6 +22,14 @@ func writeMain(config *config.Config, isUseCache bool, cache *cache.Cache) (err 
 	})
 	runTask(&wg, errChan, func() (err error) {
 		cache.CMD, err = generateTemplateFile(config, "/app/template/cmd/api/api.go", "cmd/api/api.go", cache.CMD, isUseCache)
+		return
+	})
+	runTask(&wg, errChan, func() (err error) {
+		cache.Gitignore, err = generateTemplateFile(config, "/app/template/.gitignore", ".gitignore", cache.Gitignore, isUseCache)
+		return
+	})
+	runTask(&wg, errChan, func() (err error) {
+		cache.Air, err = generateTemplateFile(config, "/app/template/.air.toml", ".air.toml", cache.Air, isUseCache)
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {
