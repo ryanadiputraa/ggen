@@ -21,6 +21,9 @@ func writePkg(config *config.Config, isUseCache bool, cache *cache.Cache) (err e
 	if err = os.MkdirAll("pkg/respwr/", userPermission); err != nil {
 		return
 	}
+	if err = os.MkdirAll("pkg/validator/", userPermission); err != nil {
+		return
+	}
 
 	wg := sync.WaitGroup{}
 	errChan := make(chan error, 8)
