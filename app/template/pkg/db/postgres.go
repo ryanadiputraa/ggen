@@ -15,8 +15,8 @@ const (
 	connMaxIdleTime = 20
 )
 
-func NewPostgres(dsn string) (dv *sql.DB, err error) {
-	db, err := sql.Open("postgres", dsn)
+func NewPostgres(dsn string) (db *sql.DB, err error) {
+	db, err = sql.Open("postgres", dsn)
 	if err != nil {
 		return
 	}
