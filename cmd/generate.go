@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 
 	"github.com/ryanadiputraa/ggen/v2/app/module"
 	"github.com/ryanadiputraa/ggen/v2/app/project"
@@ -32,12 +31,6 @@ func init() {
 }
 
 func generateProject(cmd *cobra.Command, args []string) {
-	// git init
-	c := exec.Command("git", "init")
-	if err := c.Run(); err != nil {
-		log.Fatal(err)
-	}
-
 	// Init project name and go mod from flags
 	fmt.Println("Generating projects...")
 	name, mod, err := getFlags(cmd)

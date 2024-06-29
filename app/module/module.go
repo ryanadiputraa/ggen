@@ -16,8 +16,14 @@ func NewModule(config *config.Config) (err error) {
 		return
 	}
 
+	// git init
+	c := exec.Command("git", "init")
+	if err = c.Run(); err != nil {
+		return
+	}
+
 	// init go module
-	c := exec.Command("go", "mod", "init", config.GoMod)
+	c = exec.Command("go", "mod", "init", config.GoMod)
 	err = c.Run()
 	return
 }
