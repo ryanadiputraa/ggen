@@ -26,7 +26,7 @@ func writePkg(config *config.Config, isUseCache bool, cache *cache.Cache) (err e
 	}
 
 	wg := sync.WaitGroup{}
-	errChan := make(chan error, 8)
+	errChan := make(chan error, 7)
 
 	runTask(&wg, errChan, func() (err error) {
 		cache.Postgres, err = generateTemplateFile(config, "/app/template/pkg/db/postgres.go", "pkg/db/postgres.go", cache.Postgres, isUseCache)
@@ -34,10 +34,6 @@ func writePkg(config *config.Config, isUseCache bool, cache *cache.Cache) (err e
 	})
 	runTask(&wg, errChan, func() (err error) {
 		cache.Logger, err = generateTemplateFile(config, "/app/template/pkg/logger/logger.go", "pkg/logger/logger.go", cache.Logger, isUseCache)
-		return
-	})
-	runTask(&wg, errChan, func() (err error) {
-		cache.Middleware, err = generateTemplateFile(config, "/app/template/pkg/middleware/middleware.go", "pkg/middleware/middleware.go", cache.Middleware, isUseCache)
 		return
 	})
 	runTask(&wg, errChan, func() (err error) {

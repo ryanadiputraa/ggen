@@ -20,7 +20,6 @@ type Cache struct {
 	Handler            string `json:"handler"`
 	Healthcheck        string `json:"healthcheck"`
 	HealthcheckHandler string `json:"healthcheck_hadler"`
-	Middleware         string `json:"middleware"`
 	Cors               string `json:"cors"`
 	Throttle           string `json:"throttle"`
 	Timeout            string `json:"timeout"`
