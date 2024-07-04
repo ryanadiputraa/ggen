@@ -23,6 +23,5 @@ func (h *handler) Healthcheck() http.HandlerFunc {
 			Status: "ok",
 		}
 		h.respwr.WriteResponseData(w, http.StatusOK, data)
-
 	}
 }

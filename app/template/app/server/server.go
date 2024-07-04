@@ -6,6 +6,7 @@ import (
 
 	"github.com/ryanadiputraa/ggen/v2/app/template/config"
 	"github.com/ryanadiputraa/ggen/v2/app/template/pkg/logger"
+	"github.com/ryanadiputraa/ggen/v2/app/template/pkg/middleware"
 	"github.com/ryanadiputraa/ggen/v2/app/template/pkg/respwr"
 )
 
@@ -25,10 +26,25 @@ func NewServer(config config.Config, logger logger.Logger, db *sql.DB) *http.Ser
 		db:     db,
 		respwr: respwr.NewHTTPResponseWriter(),
 	}
+
 	s.setupHandlers()
+	handler := s.Use(
+		middleware.CORSMiddleware,
+		middleware.TimeoutMiddleware,
+		middleware.ThrottleMiddleware,
+	)
 
 	return &http.Server{
 		Addr:    config.Port,
-		Handler: s.web,
+		Handler: handler,
 	}
+}
+
+// Use return http.Handler with attached middlewares
+func (s *Server) Use(middlewares ...func(handler http.Handler) http.Handler) (handler http.Handler) {
+	handler = s.web
+	for _, m := range middlewares {
+		handler = m(handler)
+	}
+	return
 }
