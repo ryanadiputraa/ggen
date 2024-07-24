@@ -42,8 +42,6 @@ func GenerateProjectTempalate(config *config.Config) (err error) {
 	wg := sync.WaitGroup{}
 	templateErr := make(chan error, 5)
 
-	// TOOD: refactor template
-
 	runTask(&wg, templateErr, func() error { return writeApp(config, isUseCache, c) })
 	runTask(&wg, templateErr, func() error { return writeMain(config, isUseCache, c) })
 	runTask(&wg, templateErr, func() error { return writeConfig(config, isUseCache, c) })
@@ -86,8 +84,8 @@ func generateTemplateFile(config *config.Config, tmplPath, destPath, cache strin
 }
 
 func writeFile(config *config.Config, content, destPath string) (err error) {
-	modifiedName := strings.Replace(string(content), "<project_name>", config.ProjectName, -1)
-	modifiedMod := strings.Replace(string(modifiedName), "github.com/ryanadiputraa/ggen/v2/app/template", config.GoMod, -1)
+	modifiedName := strings.ReplaceAll(string(content), "<project_name>", config.ProjectName)
+	modifiedMod := strings.ReplaceAll(string(modifiedName), "github.com/ryanadiputraa/ggen/v2/app/template", config.GoMod)
 	err = os.WriteFile(destPath, []byte(modifiedMod), 0644)
 	return
 }
