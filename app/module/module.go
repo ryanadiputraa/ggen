@@ -24,8 +24,7 @@ func NewModule(config *config.Config) (err error) {
 
 	// init go module
 	c = exec.Command("go", "mod", "init", config.GoMod)
-	err = c.Run()
-	return
+	return c.Run()
 }
 
 func TidyGoMod() (err error) {
