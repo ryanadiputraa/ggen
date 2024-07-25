@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/ryanadiputraa/ggen/v2/app/module"
+	"github.com/ryanadiputraa/ggen/v2/app/template"
 	"github.com/ryanadiputraa/ggen/v2/config"
 	"github.com/ryanadiputraa/ggen/v2/pkg/logger"
 	"github.com/spf13/cobra"
@@ -39,13 +39,10 @@ func generateProject(cmd *cobra.Command, args []string) {
 	cfg := config.NewConfig(name, mod)
 	log.Info(fmt.Sprintf("Generating %v...", cfg.ProjectName))
 
-	// Generate project
-	if err = module.NewModule(cfg); err != nil {
+	if err = template.FetchTemplate(name); err != nil {
 		log.Fatal(err)
 	}
-	if err = module.TidyGoMod(); err != nil {
-		log.Fatal(err)
-	}
+
 	log.Info("Project generated!")
 }
 
