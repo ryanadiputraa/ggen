@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/ryanadiputraa/ggen/v2/app/module"
 	"github.com/ryanadiputraa/ggen/v2/config"
+	"github.com/ryanadiputraa/ggen/v2/pkg/logger"
 	"github.com/spf13/cobra"
 )
 
@@ -29,12 +29,15 @@ func init() {
 }
 
 func generateProject(cmd *cobra.Command, args []string) {
-	fmt.Println("Generating projects...")
+	log := logger.NewLogger()
+
 	name, mod, err := getFlags(cmd)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	cfg := config.NewConfig(name, mod)
+	log.Info(fmt.Sprintf("Generating %v...", cfg.ProjectName))
 
 	// Generate project
 	if err = module.NewModule(cfg); err != nil {
@@ -43,7 +46,7 @@ func generateProject(cmd *cobra.Command, args []string) {
 	if err = module.TidyGoMod(); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Project generated!")
+	log.Info("Project generated!")
 }
 
 func getFlags(cmd *cobra.Command) (name, mod string, err error) {
