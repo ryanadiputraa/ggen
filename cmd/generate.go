@@ -2,12 +2,11 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/ryanadiputraa/ggen/v2/app/module"
-	"github.com/ryanadiputraa/ggen/v2/app/project"
-	"github.com/ryanadiputraa/ggen/v2/config"
+	"github.com/ryanadiputraa/ggen/v2/app/template"
+	"github.com/ryanadiputraa/ggen/v2/pkg/logger"
 	"github.com/spf13/cobra"
 )
 
@@ -26,37 +25,28 @@ var generateCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(generateCmd)
-	generateCmd.Flags().StringP("name", "n", DefaultName, "Init project name")
+	generateCmd.Flags().StringP("name", "n", DefaultName, "Project name")
 	generateCmd.Flags().StringP("mod", "m", DefaultMod, "Go mod name")
 }
 
 func generateProject(cmd *cobra.Command, args []string) {
-	// Init project name and go mod from flags
-	fmt.Println("Generating projects...")
+	log := logger.NewLogger()
+
 	name, mod, err := getFlags(cmd)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Get project origin patth
-	wd, err := os.Getwd()
-	if err != nil {
+	log.Info(fmt.Sprintf("Generating %v...", name))
+	if err = template.FetchTemplate(name, mod); err != nil {
+		os.RemoveAll(name)
 		log.Fatal(err)
 	}
-
-	// Generate project
-	cfg := config.NewConfig(name, mod, wd)
-	if err = module.NewModule(cfg); err != nil {
+	if err = module.SetupProject(name, mod, log); err != nil {
+		os.RemoveAll(name)
 		log.Fatal(err)
 	}
-	if err = project.GenerateProjectTempalate(cfg); err != nil {
-		log.Fatal(err)
-	}
-	if err = module.TidyGoMod(); err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("Project generated!")
+	log.Info("Project generated!")
 }
 
 func getFlags(cmd *cobra.Command) (name, mod string, err error) {
