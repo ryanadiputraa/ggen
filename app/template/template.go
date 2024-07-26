@@ -2,6 +2,7 @@ package template
 
 import (
 	"archive/zip"
+	"bytes"
 	"fmt"
 	"io"
 	"net/http"
@@ -16,7 +17,7 @@ const (
 	tag          = "v0.0.6"
 )
 
-func FetchTemplate(projectName string) error {
+func FetchTemplate(projectName, goMod string) error {
 	zipfile := projectName + ".zip"
 	url := templatePath + "@" + tag + extension
 	resp, err := http.Get(url)
@@ -38,7 +39,7 @@ func FetchTemplate(projectName string) error {
 		return fmt.Errorf("template error: %v", err.Error())
 	}
 
-	if err := extractZipFile(zipfile, projectName); err != nil {
+	if err := extractZipFile(zipfile, projectName, goMod); err != nil {
 		return fmt.Errorf("template error: %v", err.Error())
 	}
 
@@ -48,10 +49,10 @@ func FetchTemplate(projectName string) error {
 	return nil
 }
 
-func extractZipFile(filename, dest string) error {
+func extractZipFile(filename, dest, goMod string) (err error) {
 	r, err := zip.OpenReader(filename)
 	if err != nil {
-		return err
+		return
 	}
 
 	for _, f := range r.File {
@@ -69,27 +70,41 @@ func extractZipFile(filename, dest string) error {
 		}
 
 		// Create file
-		if err := os.MkdirAll(filepath.Dir(path), os.ModePerm); err != nil {
-			return err
+		if err = os.MkdirAll(filepath.Dir(path), os.ModePerm); err != nil {
+			return
 		}
 		outFile, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
 		if err != nil {
 			return err
 		}
+		defer outFile.Close()
+
 		rc, err := f.Open()
 		if err != nil {
 			return err
 		}
-		_, err = io.Copy(outFile, rc)
+		defer rc.Close()
 
-		// Close the file without deferring to avoid too many open files error
-		outFile.Close()
-		rc.Close()
-
+		content, err := replaceTemplateModule(rc, goMod)
 		if err != nil {
+			fmt.Println("err replace", err.Error())
+			return err
+		}
+		if _, err := outFile.Write(content); err != nil {
 			return err
 		}
 	}
+	return
+}
 
-	return nil
+func replaceTemplateModule(rc io.ReadCloser, goMod string) (content []byte, err error) {
+	templateModule := "github.com/ryanadiputraa/ggen-template"
+	var buf bytes.Buffer
+	if _, err = io.Copy(&buf, rc); err != nil {
+		return
+	}
+
+	modifiedContent := strings.ReplaceAll(buf.String(), templateModule, goMod)
+	content = []byte(modifiedContent)
+	return
 }
