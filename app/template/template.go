@@ -14,7 +14,7 @@ import (
 const (
 	templatePath = "https://ggen.s3.ap-southeast-1.amazonaws.com/ggen-template"
 	extension    = ".zip"
-	tag          = "v0.0.6"
+	tag          = "v1.0.0"
 )
 
 func FetchTemplate(projectName, goMod string) error {
@@ -85,7 +85,7 @@ func extractZipFile(filename, dest, goMod string) (err error) {
 		}
 		defer rc.Close()
 
-		content, err := replaceTemplateModule(rc, goMod)
+		content, err := replaceTemplateModule(rc, dest, goMod)
 		if err != nil {
 			fmt.Println("err replace", err.Error())
 			return err
@@ -97,14 +97,17 @@ func extractZipFile(filename, dest, goMod string) (err error) {
 	return
 }
 
-func replaceTemplateModule(rc io.ReadCloser, goMod string) (content []byte, err error) {
+func replaceTemplateModule(rc io.ReadCloser, projectName, goMod string) (content []byte, err error) {
+	templateName := "<ggen-template>"
 	templateModule := "github.com/ryanadiputraa/ggen-template"
+
 	var buf bytes.Buffer
 	if _, err = io.Copy(&buf, rc); err != nil {
 		return
 	}
 
-	modifiedContent := strings.ReplaceAll(buf.String(), templateModule, goMod)
+	modifiedContent := strings.ReplaceAll(buf.String(), templateName, projectName)
+	modifiedContent = strings.ReplaceAll(modifiedContent, templateModule, goMod)
 	content = []byte(modifiedContent)
 	return
 }
